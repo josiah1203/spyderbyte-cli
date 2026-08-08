@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-theme-choice="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="agentic-api-base" content="" />
+    <title>Spyderbyte</title>
+    <script>
+      (() => {
+        try {
+          const stored = localStorage.getItem('design-system-theme');
+          const choice = ['dark', 'light', 'system'].includes(stored) ? stored : 'dark';
+          const resolved =
+            choice === 'system'
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+              : choice;
+          document.documentElement.dataset.theme = resolved;
+          document.documentElement.dataset.themeChoice = choice;
+          document.documentElement.style.colorScheme = resolved;
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

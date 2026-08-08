@@ -1,0 +1,48 @@
+{
+  "name": "@agentic-platform/local-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.js"
+    },
+    "./pagination": {
+      "types": "./dist/pagination.d.ts",
+      "import": "./dist/pagination.js"
+    },
+    "./rate-limit": {
+      "types": "./dist/rate-limit.d.ts",
+      "import": "./dist/rate-limit.js"
+    }
+  },
+  "dependencies": {
+    "@agentic-platform/agent-registry": "workspace:*",
+    "@agentic-platform/artifact-registry": "workspace:*",
+    "@agentic-platform/backends": "workspace:*",
+    "@agentic-platform/budget": "workspace:*",
+    "@agentic-platform/cloud-runtime": "workspace:*",
+    "@agentic-platform/license": "workspace:*",
+    "@agentic-platform/orchestrator": "workspace:*",
+    "@agentic-platform/policy": "workspace:*",
+    "@agentic-platform/provider-runtime": "workspace:*",
+    "@agentic-platform/runtime-contracts": "workspace:*",
+    "@agentic-platform/runtime-domain": "workspace:*",
+    "@agentic-platform/state": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node ../../scripts/verify/lint-package.mjs",
+    "test": "vitest run --passWithNoTests --config ../../vitest.config.ts",
+    "test:integration": "vitest run --passWithNoTests --config ../../vitest.integration.config.ts",
+    "test:invariants": "vitest run --passWithNoTests --config ../../vitest.invariants.config.ts"
+  }
+}

@@ -1,0 +1,18 @@
+[package]
+name = "spyderbyte-shell"
+version = "0.0.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Spyderbyte's presentation-only terminal shell"
+
+[lib]
+name = "spyderbyte_shell"
+path = "src/lib.rs"
+
+[[bin]]
+name = "spyderbyte"
+path = "src/main.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+

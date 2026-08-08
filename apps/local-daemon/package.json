@@ -1,0 +1,42 @@
+{
+  "name": "@agentic-platform/local-daemon",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "dependencies": {
+    "@agentic-platform/agent-registry": "workspace:*",
+    "@agentic-platform/artifact-registry": "workspace:*",
+    "@agentic-platform/backends": "workspace:*",
+    "@agentic-platform/license": "workspace:*",
+    "@agentic-platform/local-api": "workspace:*",
+    "@agentic-platform/orchestrator": "workspace:*",
+    "@agentic-platform/policy": "workspace:*",
+    "@agentic-platform/provider-runtime": "workspace:*",
+    "@agentic-platform/projections": "workspace:*",
+    "@agentic-platform/runtime-contracts": "workspace:*",
+    "@agentic-platform/state": "workspace:*",
+    "@agentic-platform/workspace": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "local:dataset": "pnpm build && node dist/cli.js",
+    "local:server": "pnpm build && node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node ../../scripts/verify/lint-package.mjs",
+    "test": "vitest run --passWithNoTests --config ../../vitest.config.ts",
+    "test:integration": "vitest run --passWithNoTests --config ../../vitest.integration.config.ts",
+    "test:invariants": "vitest run --passWithNoTests --config ../../vitest.invariants.config.ts"
+  }
+}
