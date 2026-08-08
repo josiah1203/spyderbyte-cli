@@ -4806,6 +4806,38 @@ async function handleLocalApiRequestCore(
     }
     return { statusCode: 200, body: snapshot };
   }
+  if (method === 'GET' && path === '/v1/visualizations/catalog') {
+    return {
+      statusCode: 200,
+      body: {
+        schemaVersion: 1,
+        resourceType: 'visualization',
+        available: options.providerRuntime !== undefined,
+        types: [
+          'table',
+          'metric',
+          'kpi',
+          'line',
+          'bar',
+          'stacked-bar',
+          'area',
+          'pivot',
+          'scatter',
+          'histogram',
+          'box',
+          'heatmap',
+          'point-map',
+          'choropleth',
+          'time-series',
+          'confusion-matrix',
+          'roc',
+          'precision-recall',
+          'feature-importance',
+        ],
+        operations: ['discover', 'invoke', 'observe', 'inspect'],
+      },
+    };
+  }
   const visualizationChoosePath = path === '/v1/visualizations/choose';
   const visualizationValidatePath = path === '/v1/visualizations/validate';
   const visualizationRenderPath = path === '/v1/visualizations/render';
