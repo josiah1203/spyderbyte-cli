@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${SPYDERBYTE_CONFIRM_DEV_RESET:-}" != "YES" ]]; then
+  echo 'Refusing to remove local dependency volumes. Set SPYDERBYTE_CONFIRM_DEV_RESET=YES.' >&2
+  exit 2
+fi
+
+root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+docker compose --project-directory "$root_dir" -f "$root_dir/deploy/local/docker-compose.yml" down --volumes --remove-orphans

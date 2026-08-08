@@ -1,0 +1,70 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Spyderbyte",
+  "version": "0.0.1",
+  "identifier": "com.spyderbyte.desktop",
+  "build": {
+    "beforeDevCommand": "AGENTIC_MANAGED_RUNTIME=false pnpm --filter @agentic-platform/web dev -- --host 127.0.0.1 --port 4173",
+    "beforeBuildCommand": "node ../../scripts/release/prepare-desktop.mjs",
+    "devUrl": "http://127.0.0.1:4173",
+    "frontendDist": "../frontend-dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Spyderbyte",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:* http://tauri.localhost:*; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval'"
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["spyderbyte", "agentic"]
+      }
+    },
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEE3NTk5MUI5MDg5NzdGMTEKUldRUmY1Y0l1WkZacDg4NUJMb3g4M2k2QnUzSGUzRCtUaENERXNqVVo2a1luZExUa2RQdXRmekcK",
+      "endpoints": [
+        "https://updates.spyderbyte.com/v1/updates/{{target}}/{{arch}}/{{current_version}}"
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg"],
+    "icon": ["icons/icon.png"],
+    "resources": ["resources/meltano", "resources/bridges"],
+    "externalBin": ["binaries/agentic-local-daemon"],
+    "category": "public.app-category.developer-tools",
+    "shortDescription": "Local-first AI, data, code, and creator workflows",
+    "longDescription": "Spyderbyte is a local-first workspace for governed AI, data, code, ML, and creator workflows.",
+    "macOS": {
+      "minimumSystemVersion": "13.0",
+      "hardenedRuntime": true,
+      "entitlements": "entitlements.plist",
+      "dmg": {
+        "windowSize": {
+          "width": 660,
+          "height": 440
+        },
+        "appPosition": {
+          "x": 180,
+          "y": 220
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 220
+        }
+      }
+    }
+  }
+}

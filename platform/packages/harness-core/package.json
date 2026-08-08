@@ -1,0 +1,29 @@
+{
+  "name": "@agentic-platform/harness-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@agentic-platform/budget": "workspace:*",
+    "@agentic-platform/policy": "workspace:*",
+    "@agentic-platform/runtime-contracts": "workspace:*",
+    "@agentic-platform/state": "workspace:*",
+    "@agentic-platform/tool-broker": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node ../../scripts/verify/lint-package.mjs",
+    "test": "vitest run --passWithNoTests --config ../../vitest.config.ts",
+    "test:integration": "vitest run --passWithNoTests --config ../../vitest.integration.config.ts",
+    "test:invariants": "vitest run --passWithNoTests --config ../../vitest.invariants.config.ts"
+  }
+}

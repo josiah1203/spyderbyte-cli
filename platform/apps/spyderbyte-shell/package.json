@@ -1,0 +1,12 @@
+{
+  "name": "@agentic-platform/spyderbyte-shell",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Rust terminal shell boundary for Spyderbyte",
+  "scripts": {
+    "build": "cargo build --manifest-path Cargo.toml --bin spyderbyte",
+    "typecheck": "cargo check --manifest-path Cargo.toml --all-targets",
+    "lint": "cargo fmt --all -- --check",
+    "test": "cargo test --manifest-path Cargo.toml"
+  }
+}

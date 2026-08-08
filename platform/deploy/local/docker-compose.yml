@@ -1,0 +1,85 @@
+name: spyderbyte-local
+
+services:
+  postgres:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_USER: ${SPYDERBYTE_POSTGRES_USER:-platform}
+      POSTGRES_PASSWORD: ${SPYDERBYTE_POSTGRES_PASSWORD:-platform-dev-only}
+      POSTGRES_DB: ${SPYDERBYTE_POSTGRES_DB:-platform}
+    ports:
+      - '${SPYDERBYTE_POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - spyderbyte-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  nats:
+    image: nats:2.10.22-alpine
+    command: ['-js', '-sd', '/data', '-m', '8222']
+    ports:
+      - '${SPYDERBYTE_NATS_PORT:-4222}:4222'
+      - '${SPYDERBYTE_NATS_MONITOR_PORT:-8222}:8222'
+    volumes:
+      - spyderbyte-nats:/data
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:8222/healthz']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    command: ['server', '/data', '--console-address', ':9001']
+    environment:
+      MINIO_ROOT_USER: ${SPYDERBYTE_MINIO_ROOT_USER:-minio-dev}
+      MINIO_ROOT_PASSWORD: ${SPYDERBYTE_MINIO_ROOT_PASSWORD:-minio-dev-only}
+    ports:
+      - '${SPYDERBYTE_MINIO_PORT:-9000}:9000'
+      - '${SPYDERBYTE_MINIO_CONSOLE_PORT:-9001}:9001'
+    volumes:
+      - spyderbyte-minio:/data
+    healthcheck:
+      test: ['CMD', 'curl', '--fail', 'http://127.0.0.1:9000/minio/health/live']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  opa:
+    image: openpolicyagent/opa:0.70.0
+    command: ['run', '--server', '--addr=0.0.0.0:8181']
+    ports:
+      - '${SPYDERBYTE_OPA_PORT:-8181}:8181'
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '--quiet', 'http://127.0.0.1:8181/health']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  temporal:
+    image: temporalio/auto-setup:1.27.2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB: postgresql
+      DB_PORT: 5432
+      POSTGRES_USER: ${SPYDERBYTE_POSTGRES_USER:-platform}
+      POSTGRES_PWD: ${SPYDERBYTE_POSTGRES_PASSWORD:-platform-dev-only}
+      POSTGRES_SEEDS: postgres
+      DBNAME: temporal
+    ports:
+      - '${SPYDERBYTE_TEMPORAL_PORT:-7233}:7233'
+    healthcheck:
+      test: ['CMD-SHELL', 'tctl --address temporal:7233 cluster health >/dev/null 2>&1']
+      interval: 10s
+      timeout: 10s
+      retries: 18
+
+volumes:
+  spyderbyte-postgres:
+  spyderbyte-nats:
+  spyderbyte-minio:

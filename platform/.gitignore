@@ -1,0 +1,31 @@
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Build and test output
+.turbo/
+coverage/
+dist/
+tmp/
+.agentic/
+.agentic-workspace/
+apps/desktop/frontend-dist/
+target/
+apps/desktop/.pkg-cache/
+apps/desktop/src-tauri/resources/meltano/meltano
+apps/desktop/src-tauri/resources/meltano/runtime-manifest.json
+apps/desktop/src-tauri/tauri.generated.conf.json
+apps/desktop/src-tauri/resources/bridges/*/bridge
+apps/desktop/src-tauri/resources/bridges/*/runtime-manifest.json
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/

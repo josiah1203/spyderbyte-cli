@@ -1,0 +1,50 @@
+{
+  "name": "@agentic-platform/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/api/index.js",
+  "types": "dist/api/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/api/index.d.ts",
+      "import": "./dist/api/index.js"
+    },
+    "./client": {
+      "types": "./dist/api/client.d.ts",
+      "import": "./dist/api/client.js"
+    }
+  },
+  "dependencies": {
+    "@agentic-platform/runtime-contracts": "workspace:*",
+    "@agentic-platform/runtime-domain": "workspace:*",
+    "@tauri-apps/api": "^2.5.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.18.2"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc -p tsconfig.compat.json",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.compat.json --noEmit",
+    "lint": "node ../../scripts/verify/lint-package.mjs",
+    "test": "vitest run --passWithNoTests --config ../../vitest.config.ts",
+    "test:integration": "vitest run --passWithNoTests --config ../../vitest.integration.config.ts",
+    "test:invariants": "vitest run --passWithNoTests --config ../../vitest.invariants.config.ts",
+    "audit:design-system": "node scripts/audit-design-system.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^26.0.0",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.7.0",
+    "vite": "6.4.3"
+  }
+}
