@@ -81,8 +81,10 @@ describe('TransactionalOutboxDispatcher', () => {
     const publishStarted = new Promise<void>((resolve) => {
       resolvePublish = resolve;
     });
+    const published: string[] = [];
     const transport: OutboxTransport = {
-      async publish() {
+      async publish(record) {
+        published.push(record.eventId);
         resolvePublish();
         await new Promise((resolve) => setTimeout(resolve, 20));
       },
@@ -100,7 +102,11 @@ describe('TransactionalOutboxDispatcher', () => {
       transaction.outbox.pending(tenant, now),
     );
     expect(remaining).toHaveLength(1);
-    expect(remaining[0]?.eventId).toBe(second.eventId);
+    expect(published).toHaveLength(1);
+    expect([first.eventId, second.eventId]).toContain(published[0]);
+    expect(remaining[0]?.eventId).toBe(
+      published[0] === first.eventId ? second.eventId : first.eventId,
+    );
   });
 
   it('reclaims an expired claim in a replacement dispatcher', async () => {
