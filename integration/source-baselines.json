@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-08T04:44:01Z",
+  "integrationRepository": "https://github.com/josiah1203/spyderbyte-cli",
+  "baselines": {
+    "kimiCli": {
+      "commit": "cbc15c076d17f70fec9f89c90c0502e68657f505",
+      "tag": "source/kimi-cli-v1.49.0-cbc15c07",
+      "trackedFiles": 988,
+      "projectVersion": "1.49.0",
+      "license": "Apache-2.0",
+      "files": {
+        "LICENSE": "sha256:58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+        "NOTICE": "sha256:6bdd9ca6fd120dcd6ba5e16bf2bacc01f42781fd2d9754ec934c5db05fcdc395",
+        "pyproject.toml": "sha256:b2740ff71ac92e3aad9c255623abd7e670b8bb8e3152ea44a3b977b0bcdfb5e6",
+        "uv.lock": "sha256:c8ead78451556f1153329e327ee23d2a9e0bdf4afc9dedace607bfe7954077c9"
+      }
+    },
+    "spyderbytePlatform": {
+      "commit": "2579ce2b195ba394509f7b4ded6cc6dbcddbfebe",
+      "tag": "source/spyderbyte-platform-2579ce2b",
+      "trackedFiles": 755,
+      "sourceRepositoryAtFreeze": "/Users/josiah/aug",
+      "files": {
+        "package.json": "sha256:ef141737d2d539bf0d37cf261711c8abb257a215ac3ce9f13cb5c6f2f14b8c48",
+        "pnpm-lock.yaml": "sha256:fe1e0db1e3d7986f1f661201249a7ba4ba2ec3ee0127bd29d8d7164184bfcfa1"
+      }
+    }
+  },
+  "relationship": {
+    "mergeBase": null,
+    "historiesAreUnrelated": true,
+    "githubMainContainsPlatformBaseline": false
+  }
+}

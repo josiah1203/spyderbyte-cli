@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "candidates": [
+    {"candidate":"context-window-and-checkpoint","source":"kimi_cli.soul.context","decision":"fork","targetPort":"ContextWindowManager","gate":"fixture, policy-filtering, token-accounting, substitution"},
+    {"candidate":"compaction","source":"kimi_cli.soul.compaction","decision":"fork","targetPort":"ContextCompactor","gate":"fixture, metering, redaction, failure isolation"},
+    {"candidate":"agent-loop-retry-streaming","source":"kimi_cli.soul.kimisoul","decision":"rewrite","targetPort":"AgentRuntimeAdapter","gate":"Run ownership, idempotency, cancellation, no durable local authority"},
+    {"candidate":"provider-transports","source":"kosong","decision":"fork","targetPort":"ProviderTransport","gate":"brokered credentials, normalized errors, usage signals, redaction"},
+    {"candidate":"shell-file-web-mcp-tools","source":"kimi_cli.tools","decision":"fork","targetPort":"ToolImplementation","gate":"ToolBroker, sandbox, grants, path/network/output limits"},
+    {"candidate":"process-and-filesystem","source":"pykaos","decision":"fork","targetPort":"LocalProcessRuntime","gate":"sandbox, process-tree cancellation, environment isolation, audit"},
+    {"candidate":"approval-queue-and-panels","source":"kimi_cli.approval_runtime and kimi_cli.ui","decision":"fork","targetPort":"ApprovalPresenter","gate":"server-issued decision only, replay, expiry, revocation"},
+    {"candidate":"session-serialization","source":"kimi_cli.session","decision":"reject-as-authority","targetPort":"CheckpointCache","gate":"disposable cache only, backend reconciliation"},
+    {"candidate":"background-workers","source":"kimi_cli.background and kimi_cli.subagents","decision":"fork","targetPort":"BackgroundExecution","gate":"parent/child Runs, budget, cancellation, lineage, recovery"},
+    {"candidate":"usage-signals","source":"kosong and kimi_cli usage events","decision":"adapt","targetPort":"UsageSignalAdapter","gate":"ledger reconciliation; never authoritative cost"},
+    {"candidate":"kimi-auth-account-telemetry-update","source":"kimi_cli.auth, telemetry, update paths","decision":"reject","targetPort":null,"gate":"remove from production path"}
+  ]
+}
