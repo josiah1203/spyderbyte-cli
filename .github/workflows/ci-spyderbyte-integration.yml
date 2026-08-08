@@ -1,0 +1,38 @@
+name: CI (Spyderbyte integration)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/ci-spyderbyte-integration.yml"
+      - "SPYDERBYTE_IMPLEMENTATION_PLAN.md"
+      - "docs/spyderbyte-integration/**"
+      - "integration/**"
+      - "scripts/verify_wave_0.py"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ci-spyderbyte-integration.yml"
+      - "SPYDERBYTE_IMPLEMENTATION_PLAN.md"
+      - "docs/spyderbyte-integration/**"
+      - "integration/**"
+      - "scripts/verify_wave_0.py"
+
+permissions:
+  contents: read
+
+jobs:
+  wave-0-provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out both source histories and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify immutable baselines and Kimi classification
+        run: python scripts/verify_wave_0.py

@@ -1,5 +1,11 @@
 # Kimi CLI
 
+> [!NOTE]
+> This fork is the integration repository for the Spyderbyte terminal shell. The sole active
+> delivery specification is the [Spyderbyte Unified Implementation Plan](SPYDERBYTE_IMPLEMENTATION_PLAN.md).
+> Existing Kimi documentation below is retained as upstream provenance until its corresponding
+> integration wave replaces it.
+
 [![Commit Activity](https://img.shields.io/github/commit-activity/w/MoonshotAI/kimi-cli)](https://github.com/MoonshotAI/kimi-cli/graphs/commit-activity)
 [![Checks](https://img.shields.io/github/check-runs/MoonshotAI/kimi-cli/main)](https://github.com/MoonshotAI/kimi-cli/actions)
 [![Version](https://img.shields.io/pypi/v/kimi-cli)](https://pypi.org/project/kimi-cli/)

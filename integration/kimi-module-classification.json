@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "src/kimi_cli",
+  "classificationOrder": [
+    {
+      "patterns": ["src/kimi_cli/ui/**"],
+      "disposition": "preserve",
+      "boundary": "frontend",
+      "reason": "Terminal rendering, input, keyboard, layout, print, and view-state primitives."
+    },
+    {
+      "patterns": ["src/kimi_cli/acp/**", "src/kimi_cli/wire/**"],
+      "disposition": "adapt",
+      "boundary": "frontend-transport",
+      "reason": "Retain protocol mechanics while remapping sessions, permissions, Runs, and artifacts to Spyderbyte."
+    },
+    {
+      "patterns": ["src/kimi_cli/soul/context.py", "src/kimi_cli/soul/compaction.py"],
+      "disposition": "adapt",
+      "boundary": "runtime-adapter",
+      "reason": "Candidate context budgeting and compaction algorithms; backend history and policy remain authoritative."
+    },
+    {
+      "patterns": ["src/kimi_cli/approval_runtime/**"],
+      "disposition": "adapt",
+      "boundary": "frontend-adapter",
+      "reason": "Preserve queue and presentation mechanics only; replace local approval authority."
+    },
+    {
+      "patterns": ["src/kimi_cli/background/**", "src/kimi_cli/subagents/**"],
+      "disposition": "adapt",
+      "boundary": "runtime-adapter",
+      "reason": "Candidate worker mechanics after parent/child Run, cancellation, budget, and audit conformance."
+    },
+    {
+      "patterns": ["src/kimi_cli/tools/**"],
+      "disposition": "adapt",
+      "boundary": "tool-adapter",
+      "reason": "Candidate implementations only through ToolBroker, sandbox, approval, cancellation, and audit."
+    },
+    {
+      "patterns": ["src/kimi_cli/hooks/**", "src/kimi_cli/plugin/**", "src/kimi_cli/skill/**"],
+      "disposition": "adapt",
+      "boundary": "extension-adapter",
+      "reason": "Extension mechanics require Spyderbyte capability, policy, and provenance contracts."
+    },
+    {
+      "patterns": ["src/kimi_cli/notifications/**"],
+      "disposition": "adapt",
+      "boundary": "frontend-adapter",
+      "reason": "Presentation mechanics may remain; notification truth comes from backend events."
+    },
+    {
+      "patterns": ["src/kimi_cli/cli/**", "src/kimi_cli/__main__.py"],
+      "disposition": "adapt",
+      "boundary": "composition",
+      "reason": "Command ergonomics remain while the canonical entrypoint and command authority become Spyderbyte-owned."
+    },
+    {
+      "patterns": ["src/kimi_cli/utils/**"],
+      "disposition": "preserve",
+      "boundary": "shared-primitive",
+      "reason": "Generic terminal, rendering, path, serialization, and async helpers subject to dependency review."
+    },
+    {
+      "patterns": ["src/kimi_cli/auth/**", "src/kimi_cli/telemetry/**", "src/kimi_cli/web/**", "src/kimi_cli/vis/**"],
+      "disposition": "remove",
+      "boundary": "product-authority",
+      "reason": "Kimi account, telemetry, web, and visualization product surfaces are not Spyderbyte authorities."
+    },
+    {
+      "patterns": ["src/kimi_cli/soul/**", "src/kimi_cli/agents/**", "src/kimi_cli/prompts/**"],
+      "disposition": "replace",
+      "boundary": "product-authority",
+      "reason": "Kimi agent composition, prompts, provider/tool orchestration, and policy are replaced by Spyderbyte domain services."
+    },
+    {
+      "patterns": ["src/kimi_cli/session.py", "src/kimi_cli/session_*.py", "src/kimi_cli/llm.py", "src/kimi_cli/config.py", "src/kimi_cli/app.py", "src/kimi_cli/share.py", "src/kimi_cli/mcp_oauth.py"],
+      "disposition": "replace",
+      "boundary": "product-authority",
+      "reason": "Durable session, provider, credential, sharing, and composition authority moves to Spyderbyte."
+    },
+    {
+      "patterns": ["src/kimi_cli/agentspec.py", "src/kimi_cli/constant.py", "src/kimi_cli/metadata.py", "src/kimi_cli/exception.py", "src/kimi_cli/__init__.py", "src/kimi_cli/py.typed", "src/kimi_cli/CHANGELOG.md"],
+      "disposition": "adapt",
+      "boundary": "compatibility",
+      "reason": "Temporary compatibility surface during namespace and branding migration."
+    },
+    {
+      "patterns": ["src/kimi_cli/deps/**", "src/kimi_cli/skills/**"],
+      "disposition": "defer",
+      "boundary": "migration-review",
+      "reason": "Review generated dependencies and bundled skills after the Spyderbyte capability contract is stable."
+    }
+  ]
+}
