@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+compose=(docker compose --project-directory "$root_dir" -f "$root_dir/deploy/local/docker-compose.yml")
+"${compose[@]}" ps
+"${compose[@]}" exec -T postgres pg_isready -U "${SPYDERBYTE_POSTGRES_USER:-platform}" -d "${SPYDERBYTE_POSTGRES_DB:-platform}"
+curl --fail --silent --show-error "http://127.0.0.1:${SPYDERBYTE_NATS_MONITOR_PORT:-8222}/healthz" >/dev/null
+curl --fail --silent --show-error "http://127.0.0.1:${SPYDERBYTE_MINIO_PORT:-9000}/minio/health/live" >/dev/null
+curl --fail --silent --show-error "http://127.0.0.1:${SPYDERBYTE_OPA_PORT:-8181}/health" >/dev/null
+echo 'Spyderbyte local dependency health checks passed.'

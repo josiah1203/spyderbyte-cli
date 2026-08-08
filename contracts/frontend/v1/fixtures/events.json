@@ -1,0 +1,35 @@
+[
+  {
+    "schemaVersion": 1,
+    "eventId": "evt_fixture_01",
+    "cursor": 1,
+    "kind": "session.ready",
+    "occurredAt": "2026-08-08T00:00:00Z",
+    "projectId": "prj_fixture_01",
+    "agentSessionId": "as_fixture_01",
+    "runId": null,
+    "payload": {"mode": "local"}
+  },
+  {
+    "schemaVersion": 1,
+    "eventId": "evt_fixture_02",
+    "cursor": 2,
+    "kind": "run.status",
+    "occurredAt": "2026-08-08T00:00:01Z",
+    "projectId": "prj_fixture_01",
+    "agentSessionId": "as_fixture_01",
+    "runId": "run_fixture_01",
+    "payload": {"state": "running"}
+  },
+  {
+    "schemaVersion": 1,
+    "eventId": "evt_fixture_03",
+    "cursor": 3,
+    "kind": "stream.end",
+    "occurredAt": "2026-08-08T00:00:02Z",
+    "projectId": "prj_fixture_01",
+    "agentSessionId": "as_fixture_01",
+    "runId": "run_fixture_01",
+    "payload": {}
+  }
+]

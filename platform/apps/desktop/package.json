@@ -1,0 +1,18 @@
+{
+  "name": "@agentic-platform/desktop",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tauri dev",
+    "build:sidecar": "pnpm --filter @agentic-platform/local-daemon build && node ../../scripts/release/build-local-sidecar.mjs",
+    "build": "node ../../scripts/release/build-desktop.mjs",
+    "bundle:dmg": "AGENTIC_REQUIRE_DMG=true node ../../scripts/release/build-desktop.mjs",
+    "release:check": "bash ../../scripts/release/check-macos-release.sh",
+    "typecheck": "TAURI_CONFIG='{\"bundle\":{\"externalBin\":[]}}' cargo check --manifest-path src-tauri/Cargo.toml"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.5.0",
+    "@yao-pkg/pkg": "6.22.0",
+    "esbuild": "0.28.1"
+  }
+}

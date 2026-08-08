@@ -1,0 +1,9 @@
+{
+  "pkg": {
+    "assets": [
+      "../../packages/state/migrations/0001_authoritative_state.sql",
+      "../../packages/state/migrations/0002_projects.sql",
+      "../../packages/state/migrations/0001_append_only.sqlite.sql"
+    ]
+  }
+}

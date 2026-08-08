@@ -1,0 +1,26 @@
+{
+  "name": "@agentic-platform/tui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "spyderbyte": "dist/index.js"
+  },
+  "x-boundary-exceptions": {
+    "@agentic-platform/local-daemon": "The terminal host may auto-start the local daemon; all terminal commands still cross the typed local API/SDK boundary."
+  },
+  "dependencies": {
+    "@agentic-platform/agent-transport": "workspace:*",
+    "@agentic-platform/client-sdk": "workspace:*",
+    "@agentic-platform/local-daemon": "workspace:*",
+    "@agentic-platform/runtime-contracts": "workspace:*"
+  },
+  "scripts": {
+    "build": "pnpm --filter @agentic-platform/client-sdk build && pnpm --filter @agentic-platform/agent-transport build && pnpm --filter @agentic-platform/spyderbyte-shell build && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node ../../scripts/verify/lint-package.mjs",
+    "test": "vitest run --passWithNoTests --config ../../vitest.config.ts"
+  }
+}

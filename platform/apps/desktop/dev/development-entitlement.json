@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "Ed25519",
+  "keyId": "local-dev-2026",
+  "payload": {
+    "schemaVersion": 1,
+    "licenseId": "local-dev-2026",
+    "product": "agentic-ml-data-platform",
+    "edition": "local",
+    "features": ["local.workflow", "local.workspace.export", "local.workspace.backup"],
+    "issuedAt": "2026-08-03T00:00:00.000Z",
+    "expiresAt": "2027-08-04T00:00:00.000Z",
+    "subject": "local-development",
+    "maxWorkspaces": 25
+  },
+  "signature": "kFaHjk5sw7MGMteXZZpx8WsezTpDdf6F3xUeJGnN8f9x9DeC5ac-bl1Nwh3YuWw4VnVL_R8pvucJ3a9OW1t-Dw"
+}

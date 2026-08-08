@@ -184,19 +184,20 @@ independent build boundary.
 
 **Overall status: In progress.**
 
-- The local platform is implemented and locally verified for the scopes recorded in the
-  historical evidence, but it is not present in the Kimi-based GitHub integration repository.
-- The Kimi fork is reviewed and selected as the terminal foundation. Wave 0 provenance,
-  classification, baseline verification, and decision evidence are in progress on
-  `codex/wave-0-freeze`; source composition has not started.
+- The local platform is imported under `platform/` with its source history preserved and a
+  hermetic composed verification command.
+- The Kimi fork remains the terminal foundation. Waves 0 and 1 are complete locally: provenance,
+  classification, composition, frontend contracts, the mock shell, isolated inherited
+  primitives, daemon discovery, and visual-regression evidence are recorded.
 - Hosted deployment/certification, production commercial decisions, credentialed/native release,
   and composed Python-plus-sidecar release evidence remain open.
-- The first executable program increment is **Wave 0 — Freeze and decide** in Section 8.2.
+- The next executable program increment is **Wave 2 — Contract and transport foundation** in
+  Section 8.2; it is intentionally not started under the owner's Wave 1 stopping instruction.
 
 | Wave | Status | Evidence or next gate |
 | ---- | ------ | --------------------- |
 | 0 — Freeze and decide | Complete | Source tags, hashes, exhaustive classification, candidate decisions, baseline evidence, and owner gate recorded; PR deferred by owner |
-| 1 — Compose without coupling | Planned | Requires accepted Wave 0 decisions and PR |
+| 1 — Compose without coupling | Complete | Platform subtree, typed frontend v1 seam, mock shell, adapter boundary, daemon launcher, retained visual tests, and independent verification recorded; PR deferred by owner |
 | 2 — Contract and transport | Planned | Requires composed independent build roots and stable schema fixtures |
 | 3 — Local golden path | Planned | Requires typed Python client and deterministic event projection |
 | 4 — Computational parity | Planned | Requires the shared local AgentSession/Run vertical slice |

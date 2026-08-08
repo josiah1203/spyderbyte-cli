@@ -8,6 +8,15 @@ on:
       - "docs/spyderbyte-integration/**"
       - "integration/**"
       - "scripts/verify_wave_0.py"
+      - "scripts/generate_spyderbyte_frontend_contracts.py"
+      - "contracts/frontend/**"
+      - "src/spyderbyte_cli/**"
+      - "tests/spyderbyte_contract/**"
+      - "tests/upstream_ui/**"
+      - "platform/**"
+      - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
   push:
     branches: [main]
     paths:
@@ -16,12 +25,21 @@ on:
       - "docs/spyderbyte-integration/**"
       - "integration/**"
       - "scripts/verify_wave_0.py"
+      - "scripts/generate_spyderbyte_frontend_contracts.py"
+      - "contracts/frontend/**"
+      - "src/spyderbyte_cli/**"
+      - "tests/spyderbyte_contract/**"
+      - "tests/upstream_ui/**"
+      - "platform/**"
+      - "Makefile"
+      - "pyproject.toml"
+      - "uv.lock"
 
 permissions:
   contents: read
 
 jobs:
-  wave-0-provenance:
+  source-and-license-provenance:
     runs-on: ubuntu-latest
     steps:
       - name: Check out both source histories and tags
@@ -36,3 +54,55 @@ jobs:
 
       - name: Verify immutable baselines and Kimi classification
         run: python scripts/verify_wave_0.py
+
+  frontend-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          allow-prereleases: true
+      - uses: astral-sh/setup-uv@v1
+        with:
+          version: "0.8.5"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --frozen --all-extras --all-packages
+      - run: make frontend-contracts-check
+
+  spyderbyte-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          allow-prereleases: true
+      - uses: astral-sh/setup-uv@v1
+        with:
+          version: "0.8.5"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --frozen --all-extras --all-packages
+      - run: make verify-wave-1
+
+  spyderbyte-platform:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: pnpm
+          cache-dependency-path: platform/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify:composed
