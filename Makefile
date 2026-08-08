@@ -1,5 +1,23 @@
 .DEFAULT_GOAL := prepare
 
+.PHONY: check-spyderbyte test-spyderbyte frontend-contracts-check verify-wave-1 verify-platform
+check-spyderbyte: ## Check Spyderbyte Python composition sources.
+	@uv run ruff check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/generate_spyderbyte_frontend_contracts.py
+	@uv run ruff format --check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/generate_spyderbyte_frontend_contracts.py
+	@uv run pyright src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui
+
+test-spyderbyte: ## Run Spyderbyte frontend, boundary, adapter, and retained-UI tests.
+	@uv run pytest tests/spyderbyte_contract tests/upstream_ui -q
+
+frontend-contracts-check: ## Verify generated Spyderbyte Python frontend contracts.
+	@uv run python scripts/generate_spyderbyte_frontend_contracts.py --check
+
+verify-platform: ## Run the imported Spyderbyte platform verification independently.
+	@pnpm --dir platform verify:composed
+
+verify-wave-1: frontend-contracts-check check-spyderbyte test-spyderbyte ## Verify Wave 1 Python seams.
+	@uv run python scripts/verify_wave_0.py
+
 .PHONY: help
 help: ## Show available make targets.
 	@echo "Available make targets:"

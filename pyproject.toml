@@ -54,7 +54,7 @@ requires = ["uv_build>=0.8.5,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = ["kimi_cli"]
+module-name = ["kimi_cli", "spyderbyte_cli"]
 source-exclude = ["examples/**/*", "tests/**/*", "src/kimi_cli/deps/**/*"]
 
 [tool.uv.workspace]
@@ -73,9 +73,11 @@ kimi-cli = { workspace = true }
 [project.scripts]
 kimi = "kimi_cli.__main__:main"
 kimi-cli = "kimi_cli.__main__:main"
+spyderbyte = "spyderbyte_cli.__main__:main"
 
 [tool.ruff]
 line-length = 100
+extend-exclude = ["platform"]
 
 [tool.ruff.lint]
 select = [

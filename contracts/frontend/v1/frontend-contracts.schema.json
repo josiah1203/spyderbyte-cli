@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "FrontendCapabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "apiVersion": {
+          "title": "Apiversion",
+          "type": "string"
+        },
+        "eventResume": {
+          "default": true,
+          "title": "Eventresume",
+          "type": "boolean"
+        },
+        "eventStream": {
+          "const": "sse",
+          "default": "sse",
+          "title": "Eventstream",
+          "type": "string"
+        },
+        "nativeResources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Nativeresources",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "apiVersion"
+      ],
+      "title": "FrontendCapabilities",
+      "type": "object"
+    },
+    "FrontendEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "agentSessionId": {
+          "title": "Agentsessionid",
+          "type": "string"
+        },
+        "cursor": {
+          "minimum": 0,
+          "title": "Cursor",
+          "type": "integer"
+        },
+        "eventId": {
+          "title": "Eventid",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "session.ready",
+            "turn.accepted",
+            "assistant.delta",
+            "run.status",
+            "approval.requested",
+            "approval.committed",
+            "artifact.available",
+            "usage.updated",
+            "stream.end"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "occurredAt": {
+          "format": "date-time",
+          "title": "Occurredat",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "eventId",
+        "cursor",
+        "kind",
+        "occurredAt",
+        "projectId",
+        "agentSessionId"
+      ],
+      "title": "FrontendEvent",
+      "type": "object"
+    },
+    "FrontendSession": {
+      "additionalProperties": false,
+      "properties": {
+        "actorId": {
+          "title": "Actorid",
+          "type": "string"
+        },
+        "agentSessionId": {
+          "title": "Agentsessionid",
+          "type": "string"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/FrontendCapabilities"
+        },
+        "issuedAt": {
+          "format": "date-time",
+          "title": "Issuedat",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "local",
+            "hosted",
+            "mock"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        },
+        "workspaceId": {
+          "title": "Workspaceid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sessionId",
+        "projectId",
+        "agentSessionId",
+        "workspaceId",
+        "actorId",
+        "mode",
+        "capabilities",
+        "issuedAt"
+      ],
+      "title": "FrontendSession",
+      "type": "object"
+    },
+    "PromptAcceptance": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptedAt": {
+          "format": "date-time",
+          "title": "Acceptedat",
+          "type": "string"
+        },
+        "agentSessionId": {
+          "title": "Agentsessionid",
+          "type": "string"
+        },
+        "assistantMessageId": {
+          "title": "Assistantmessageid",
+          "type": "string"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "userMessageId": {
+          "title": "Usermessageid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestId",
+        "projectId",
+        "agentSessionId",
+        "userMessageId",
+        "assistantMessageId",
+        "runId",
+        "acceptedAt"
+      ],
+      "title": "PromptAcceptance",
+      "type": "object"
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/FrontendSession"
+    },
+    {
+      "$ref": "#/$defs/PromptAcceptance"
+    },
+    {
+      "$ref": "#/$defs/FrontendEvent"
+    }
+  ]
+}

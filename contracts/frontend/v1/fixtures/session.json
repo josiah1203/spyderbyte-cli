@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "sessionId": "fs_fixture_01",
+  "projectId": "prj_fixture_01",
+  "agentSessionId": "as_fixture_01",
+  "workspaceId": "ws_fixture_01",
+  "actorId": "actor_fixture_01",
+  "mode": "local",
+  "capabilities": {
+    "schemaVersion": 1,
+    "apiVersion": "v1",
+    "eventStream": "sse",
+    "eventResume": true,
+    "nativeResources": [
+      "dataset",
+      "sql",
+      "notebook",
+      "experiment",
+      "model",
+      "visualization",
+      "pipeline",
+      "automation"
+    ]
+  },
+  "issuedAt": "2026-08-08T00:00:00Z"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "cbc15c076d17f70fec9f89c90c0502e68657f505",
+  "purpose": "Selected unchanged Kimi UI and PTY tests retained as the Spyderbyte ergonomics regression suite.",
+  "tests": [
+    {
+      "path": "tests/e2e/test_shell_pty_e2e.py",
+      "sha256": "3029ef2f662b5b0088b27d888036ea315667e630456f40cf4da5d71d39787e0d"
+    },
+    {
+      "path": "tests/e2e/test_shell_modal_e2e.py",
+      "sha256": "d24aa72b55bdbd4157bc4c3c3d148a3b102384d3f95453f345edaa93a60b7a3a"
+    },
+    {
+      "path": "tests/ui_and_conv/test_prompt_history.py",
+      "sha256": "68e966e37e9d5ff92e04be13dceb6276240c915c99a3ba31a081a58c3f6e74de"
+    },
+    {
+      "path": "tests/ui_and_conv/test_shell_prompt_router.py",
+      "sha256": "5988a2fe29c62ab4d070c186dfc303e75e83b3cb12f5a2bc78abf6b9275aae46"
+    },
+    {
+      "path": "tests/ui_and_conv/test_streaming_content_block.py",
+      "sha256": "d69666dec8f25392331266a9ee69fe7016da919a2d95eab7dbd818bde6f225b7"
+    },
+    {
+      "path": "tests/ui_and_conv/test_tool_call_block.py",
+      "sha256": "fce07cb290d7c75f1f24021fe39f78f9d60fd82d076d2a67908674c0cd472dfa"
+    },
+    {
+      "path": "tests/ui_and_conv/test_visualize_running_prompt.py",
+      "sha256": "13c2f919bf9a0613783fc29435248f7058214a5b9823d459452eef3f108f3914"
+    },
+    {
+      "path": "tests/ui_and_conv/test_status_block.py",
+      "sha256": "624a0fa4db8e6d2e6d2f9e1c6feb3e586e5eab2c5bf718c528b8fa51227a1718"
+    },
+    {
+      "path": "tests/ui_and_conv/test_question_panel.py",
+      "sha256": "6cc71442a3aae3c360c0d42ea7804b44706ed8d0cfa0f2b3fdff0de5ea19404f"
+    },
+    {
+      "path": "tests/ui/test_console_theme.py",
+      "sha256": "93597787d0a5c15d696ca016807365823d39052d8617acb6e60418089ac3d947"
+    }
+  ]
+}
