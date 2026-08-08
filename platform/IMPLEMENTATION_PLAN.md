@@ -1,7 +1,7 @@
 # Agentic ML/Data Platform Implementation Plan
 
 > **Superseded:** This is a historical platform-foundation implementation record. The authoritative
-> plan going forward is [`SPYDERBYTE_DECLARATIVE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_DECLARATIVE_IMPLEMENTATION_PLAN.md).
+> plan going forward is [`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md).
 > Keep this file as evidence; do not use it for new status updates or phase decisions.
 
 > Historical foundation execution record
