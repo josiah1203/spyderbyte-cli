@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from kimi_cli.ui.shell.console import console
 from spyderbyte_cli.frontend.models import FrontendEvent, FrontendSession, PromptAcceptance
+
+console = Console()
 
 
 def render_session(session: FrontendSession) -> None:
