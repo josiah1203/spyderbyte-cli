@@ -182,17 +182,17 @@ independent build boundary.
 
 ### 2.4 Current program status
 
-**Overall status: In progress.**
+**Overall status: In progress — local integration waves 0–6 complete; Wave 7 blocked on Section 13.**
 
 - The local platform is imported under `platform/` with its source history preserved and a
   hermetic composed verification command.
 - Waves 0 through 6 are complete locally for their executable scopes: provenance, composition,
   frontend contracts, transport, golden path, native resources, organizational interfaces, and
   Kimi product-authority removal on the Spyderbyte path.
-- Hosted deployment/certification, production commercial decisions, credentialed/native release,
-  package rename, and composed Python-plus-sidecar signed-release evidence remain open.
-- Next executable increment: Wave 7 hosted/commercial/release gates, limited to local scaffolding
-  until Section 13 decisions and credentials are available.
+- Wave 7 local release scaffolding and the blocked-gate checklist are recorded; hosted deployment,
+  commercial decisions, credentialed environments, package rename, and signed publication remain
+  Blocked on Section 13.
+- No further terminal-integration wave is executable without owner decisions or credentials.
 
 | Wave | Status | Evidence or next gate |
 | ---- | ------ | --------------------- |
@@ -203,7 +203,7 @@ independent build boundary.
 | 4 — Computational parity | Complete locally | Typed native-resource matrix, headless `resource` command, visualization catalog, and daemon discover evidence recorded in [`WAVE_4_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_4_EVIDENCE.md); rich-client handoff UX and hosted publication remain external |
 | 5 — Organizational/hosted interfaces | Complete locally | Governance client/CLI, workspace facets, onboarding/license, ACP cancel, and command-parity matrix recorded in [`WAVE_5_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_5_EVIDENCE.md); SSO/SCIM and signed cloud login remain external |
 | 6 — Authority cutover | Complete locally | Spyderbyte path no longer composes KimiCLI/OAuth/update/usage authority; forbidden-import evidence in [`WAVE_6_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_6_EVIDENCE.md); package rename and signed packaging remain Section 13 gated |
-| 7 — Hosted/commercial/release | Planned | Requires credentials, vendor/product decisions, signing, and release environments |
+| 7 — Hosted/commercial/release | Blocked | Local scaffolding and gate checklist in [`WAVE_7_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_7_EVIDENCE.md) / [`RELEASE_GATES.md`](docs/spyderbyte-integration/RELEASE_GATES.md); hosted/signing/commercial completion requires Section 13 decisions and credentials |
 
 No historical “phase complete” statement may be interpreted as completion of the integrated Kimi
 product or a hosted/credentialed release.
