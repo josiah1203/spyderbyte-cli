@@ -2088,6 +2088,25 @@ async function handleLocalApiRequestCore(
     await options.providerRuntime.providers.refresh();
     return { statusCode: 200, body: { models: options.providerRuntime.providers.listModels() } };
   }
+  if (method === 'GET' && path === '/v1/models/catalog') {
+    if (options.providerRuntime === undefined) {
+      return { statusCode: 501, body: { error: 'provider_runtime_not_configured' } };
+    }
+    await options.providerRuntime.providers.refresh();
+    await options.providerRuntime.refreshLocalModels();
+    await options.providerRuntime.catalog.refreshStatus();
+    return {
+      statusCode: 200,
+      body: {
+        models: options.providerRuntime.catalog.list(),
+        runtimes: options.providerRuntime.runtimes.list(),
+        installed: await options.providerRuntime.downloads.listInstalled(),
+        downloads: options.providerRuntime.downloads.listJobs(),
+        providerPriority: options.providerRuntime.providerPriority,
+        routingPolicy: options.providerRuntime.routingPolicy,
+      },
+    };
+  }
   const modelDetailMatch = /^\/v1\/models\/([^/]+)$/.exec(path);
   if (method === 'GET' && modelDetailMatch?.[1] !== undefined) {
     if (options.providerRuntime === undefined) {
@@ -2109,25 +2128,6 @@ async function handleLocalApiRequestCore(
     await options.providerRuntime.providers.refresh();
     await options.providerRuntime.refreshLocalModels();
     return { statusCode: 200, body: { models: options.providerRuntime.providers.listModels() } };
-  }
-  if (method === 'GET' && path === '/v1/models/catalog') {
-    if (options.providerRuntime === undefined) {
-      return { statusCode: 501, body: { error: 'provider_runtime_not_configured' } };
-    }
-    await options.providerRuntime.providers.refresh();
-    await options.providerRuntime.refreshLocalModels();
-    await options.providerRuntime.catalog.refreshStatus();
-    return {
-      statusCode: 200,
-      body: {
-        models: options.providerRuntime.catalog.list(),
-        runtimes: options.providerRuntime.runtimes.list(),
-        installed: await options.providerRuntime.downloads.listInstalled(),
-        downloads: options.providerRuntime.downloads.listJobs(),
-        providerPriority: options.providerRuntime.providerPriority,
-        routingPolicy: options.providerRuntime.routingPolicy,
-      },
-    };
   }
   if (method === 'GET' && path === '/v1/model-routing') {
     if (options.providerRuntime === undefined) {

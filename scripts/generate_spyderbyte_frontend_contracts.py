@@ -9,11 +9,30 @@ from pydantic import TypeAdapter
 
 from spyderbyte_cli.frontend.models import (
     EventPage,
+    FrontendAgentEvent,
+    FrontendAgentRequest,
+    FrontendAgentResponse,
+    FrontendAgentSession,
+    FrontendAgentSessionSnapshot,
     FrontendApproval,
     FrontendArtifact,
+    FrontendConversationSnapshot,
     FrontendError,
+    FrontendEstimate,
     FrontendEvent,
+    FrontendMessage,
+    FrontendModelCatalog,
+    FrontendPermission,
+    FrontendPlan,
+    FrontendPlanStep,
+    FrontendProject,
+    FrontendProviderCatalog,
+    FrontendRecommendation,
     FrontendRun,
+    FrontendRunAttempt,
+    FrontendRunDetail,
+    FrontendRunLog,
+    FrontendRuntimeCatalog,
     FrontendSession,
     FrontendUsage,
     PromptAcceptance,
@@ -33,7 +52,26 @@ def render() -> str:
         | FrontendRun
         | FrontendApproval
         | FrontendArtifact
-        | FrontendUsage,
+        | FrontendUsage
+        | FrontendProviderCatalog
+        | FrontendModelCatalog
+        | FrontendRuntimeCatalog
+        | FrontendProject
+        | FrontendAgentSession
+        | FrontendAgentRequest
+        | FrontendAgentEvent
+        | FrontendPermission
+        | FrontendRecommendation
+        | FrontendPlanStep
+        | FrontendPlan
+        | FrontendEstimate
+        | FrontendAgentResponse
+        | FrontendAgentSessionSnapshot
+        | FrontendMessage
+        | FrontendConversationSnapshot
+        | FrontendRunAttempt
+        | FrontendRunLog
+        | FrontendRunDetail,
     ).json_schema(by_alias=True, union_format="any_of")
     return json.dumps(schema, indent=2, sort_keys=True) + "\n"
 

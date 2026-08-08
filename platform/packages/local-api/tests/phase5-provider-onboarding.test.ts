@@ -97,6 +97,12 @@ describe('Phase 5 first-run and local-first provider surfaces', () => {
         reason: 'local-first',
       },
     });
+
+    const catalog = await handleLocalApiRequest(
+      { method: 'GET', path: '/v1/models/catalog', body: undefined },
+      api,
+    );
+    expect(catalog).toMatchObject({ statusCode: 200, body: { models: expect.any(Array) } });
   });
 
   it('stores BYOK credentials only in the vault and exposes preflight/health/usage safely', async () => {
