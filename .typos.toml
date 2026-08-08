@@ -1,0 +1,12 @@
+[default.extend-words]
+# Domain names, protocol identifiers, fixture fragments, and opaque test data.
+Ratatui = "Ratatui"
+alue = "alue"
+nd = "nd"
+Ue = "Ue"
+decid = "decid"
+iterm = "iterm"
+Iterm = "Iterm"
+datas = "datas"
+Seeked = "Seeked"
+seeked = "seeked"
