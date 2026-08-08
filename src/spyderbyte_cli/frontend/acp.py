@@ -146,7 +146,7 @@ class AcpSessionBridge:
         }
         async for event in self.client.events(after_cursor=self.cursor):
             self.cursor = max(self.cursor, event.cursor)
-            if event.run_id not in {None, self.run_id}:
+            if event.run_id != self.run_id:
                 continue
             yield frontend_event_to_acp(event)
             if event.kind == "stream.end":

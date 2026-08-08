@@ -30,6 +30,50 @@ class FrontendCapabilities(FrontendModel):
     native_resources: tuple[str, ...] = ()
 
 
+class FrontendProviderCatalog(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    providers: tuple[dict[str, Any], ...] = ()
+    credentials: tuple[dict[str, Any], ...] = ()
+    models: tuple[dict[str, Any], ...] = ()
+
+
+class FrontendModelCatalog(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    models: tuple[dict[str, Any], ...] = ()
+    runtimes: tuple[dict[str, Any], ...] = ()
+    provider_priority: tuple[str, ...] = ()
+    routing_policy: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendRuntimeCatalog(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    profiles: tuple[dict[str, Any], ...] = ()
+    revisions: tuple[dict[str, Any], ...] = ()
+
+
+FrontendInterface = Literal[
+    "tui",
+    "cli",
+    "acp",
+    "api",
+    "jupyter",
+    "web",
+    "automation",
+    "system",
+    "mock",
+]
+
+
+class FrontendProject(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    project_id: str
+    name: str
+    status: Literal["active", "archived"] = "active"
+    objective: str | None = None
+    version: int = Field(default=0, ge=0)
+    updated_at: datetime | None = None
+
+
 class FrontendSession(FrontendModel):
     schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
     session_id: str
@@ -40,6 +84,7 @@ class FrontendSession(FrontendModel):
     mode: Literal["local", "hosted", "mock"]
     capabilities: FrontendCapabilities
     issued_at: datetime
+    tenant_id: str | None = None
 
 
 class PromptAcceptance(FrontendModel):
@@ -75,10 +120,15 @@ class EventPage(FrontendModel):
 
 
 FrontendRunState = Literal[
+    "draft",
+    "validating",
+    "awaiting_configuration",
     "accepted",
     "queued",
+    "provisioning",
     "running",
     "awaiting_approval",
+    "finalizing",
     "succeeded",
     "failed",
     "cancelled",
@@ -94,6 +144,8 @@ class FrontendRun(FrontendModel):
     state: FrontendRunState
     attempt_count: int = Field(default=0, ge=0)
     requested_action: str | None = None
+    provider_id: str | None = None
+    model_id: str | None = None
     error: FrontendError | None = None
 
 
@@ -124,9 +176,6 @@ class FrontendUsage(FrontendModel):
     actual_cost: float | None = Field(default=None, ge=0)
 
 
-FrontendInterface = Literal["tui", "cli", "acp", "api", "mock"]
-
-
 FrontendEventKind = Literal[
     "session.ready",
     "turn.accepted",
@@ -150,6 +199,183 @@ class FrontendEvent(FrontendModel):
     agent_session_id: str
     run_id: str | None = None
     payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendAgentSession(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    session_id: str
+    workspace_id: str
+    project_id: str | None = None
+    source_interface: FrontendInterface
+    mode: Literal["conversation", "planning", "approval", "execution", "review"]
+    state: Literal["active", "awaiting_approval", "running", "completed", "failed", "cancelled"]
+    request_ids: tuple[str, ...] = ()
+    current_run_id: str | None = None
+    created_at: datetime
+    updated_at: datetime
+
+
+class FrontendAgentRequest(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    request_id: str
+    session_id: str
+    source_interface: FrontendInterface
+    mode: Literal["conversation", "planning", "approval", "execution", "review"]
+    text: str
+    created_at: datetime
+    correlation_id: str
+
+
+class FrontendAgentEvent(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    event_id: str
+    session_id: str
+    request_id: str
+    sequence: int = Field(ge=0)
+    kind: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    occurred_at: datetime
+    correlation_id: str
+
+
+class FrontendPermission(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    permission_request_id: str
+    session_id: str
+    request_id: str
+    kind: Literal["policy", "approval", "confirmation", "capability"]
+    action: str
+    reason: str
+    resources: tuple[str, ...] = ()
+    state: Literal["pending", "approved", "rejected", "expired", "revoked"]
+    requested_at: datetime
+    expires_at: datetime | None = None
+    decided_at: datetime | None = None
+
+
+class FrontendRecommendation(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    summary: str
+    actions: tuple[str, ...] = ()
+    rationale: tuple[str, ...] = ()
+    confidence: float = Field(ge=0, le=1)
+
+
+class FrontendPlanStep(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    step_id: str
+    tier: int = Field(ge=0)
+    agent_type: str
+    title: str
+    description: str
+    depends_on: tuple[str, ...] = ()
+    input_artifact_ids: tuple[str, ...] = ()
+    required_capabilities: tuple[str, ...] = ()
+    approval_required: bool = False
+    expected_outputs: tuple[str, ...] = ()
+    acceptance_criteria: tuple[str, ...] = ()
+
+
+class FrontendPlan(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    plan_id: str
+    workflow_id: str
+    execution_request_id: str | None = None
+    version: int = Field(ge=1)
+    steps: tuple[FrontendPlanStep, ...] = ()
+    created_at: datetime | None = None
+    created_by_invocation_id: str | None = None
+    digest: str | None = None
+
+
+class FrontendEstimate(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    estimated_cost: dict[str, Any] = Field(default_factory=dict)
+    estimated_duration_ms: int = Field(ge=0)
+    resource_class: str
+
+
+class FrontendAgentResponse(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    response_id: str
+    session_id: str
+    request_id: str
+    state: Literal["accepted", "awaiting_permission", "completed", "failed", "cancelled"]
+    recommendation: FrontendRecommendation
+    plan: FrontendPlan
+    estimate: FrontendEstimate
+    run_id: str | None = None
+    permission_request_id: str | None = None
+    artifacts: tuple[FrontendArtifact, ...] = ()
+    explanation: str | None = None
+    next_action: str | None = None
+    created_at: datetime
+    completed_at: datetime | None = None
+
+
+class FrontendAgentSessionSnapshot(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    session: FrontendAgentSession
+    requests: tuple[FrontendAgentRequest, ...] = ()
+    events: tuple[FrontendAgentEvent, ...] = ()
+    permissions: tuple[FrontendPermission, ...] = ()
+    responses: tuple[FrontendAgentResponse, ...] = ()
+
+
+class FrontendMessage(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    message_id: str
+    conversation_id: str
+    project_id: str
+    role: Literal["user", "assistant", "system", "tool"]
+    state: Literal["streaming", "completed", "failed", "cancelled"]
+    text: str
+    created_at: datetime
+    updated_at: datetime
+    correlation_id: str | None = None
+    provider_id: str | None = None
+    model_id: str | None = None
+    tool_name: str | None = None
+    tool_operation: str | None = None
+
+
+class FrontendConversationSnapshot(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    conversation_id: str
+    project_id: str
+    session: FrontendAgentSession | None = None
+    latest_response: FrontendAgentResponse | None = None
+    run_id: str | None = None
+    workflow_id: str | None = None
+    messages: tuple[FrontendMessage, ...] = ()
+    generating: bool = False
+    updated_at: datetime
+
+
+class FrontendRunAttempt(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    attempt_id: str
+    run_id: str
+    attempt_number: int = Field(ge=1)
+    state: str
+    error: dict[str, Any] | None = None
+
+
+class FrontendRunLog(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    event_id: str
+    run_id: str
+    event_name: str
+    occurred_at: datetime
+    message: str
+    level: Literal["info", "error", "output"]
+
+
+class FrontendRunDetail(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    run: FrontendRun
+    attempts: tuple[FrontendRunAttempt, ...] = ()
+    logs: tuple[FrontendRunLog, ...] = ()
 
 
 EventPage.model_rebuild()

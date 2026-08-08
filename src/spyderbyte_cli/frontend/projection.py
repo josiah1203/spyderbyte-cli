@@ -170,8 +170,17 @@ class FrontendProjector:
             return
         if event.kind == "stream.end" and event.run_id is not None:
             previous = self._runs.get(event.run_id)
-            if previous is not None and previous.state in {"accepted", "queued", "running"}:
-                self._runs[event.run_id] = previous.model_copy(update={"state": "succeeded"})
+            if previous is not None and previous.state in {
+                "accepted",
+                "queued",
+                "provisioning",
+                "running",
+                "awaiting_approval",
+                "finalizing",
+            }:
+                self._runs[event.run_id] = previous.model_copy(
+                    update={"state": _run_state(payload.get("state"), "succeeded")}
+                )
 
 
 def project_events(session: FrontendSession, events: Iterable[FrontendEvent]) -> FrontendSnapshot:
@@ -183,10 +192,15 @@ def project_events(session: FrontendSession, events: Iterable[FrontendEvent]) ->
 
 def _run_state(value: object, fallback: FrontendRunState) -> FrontendRunState:
     valid_states = {
+        "draft",
+        "validating",
+        "awaiting_configuration",
         "accepted",
         "queued",
+        "provisioning",
         "running",
         "awaiting_approval",
+        "finalizing",
         "succeeded",
         "failed",
         "cancelled",

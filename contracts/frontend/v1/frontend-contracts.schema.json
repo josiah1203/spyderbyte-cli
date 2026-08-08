@@ -40,6 +40,422 @@
       "title": "EventPage",
       "type": "object"
     },
+    "FrontendAgentEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "correlationId": {
+          "title": "Correlationid",
+          "type": "string"
+        },
+        "eventId": {
+          "title": "Eventid",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "occurredAt": {
+          "format": "date-time",
+          "title": "Occurredat",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "eventId",
+        "sessionId",
+        "requestId",
+        "sequence",
+        "kind",
+        "occurredAt",
+        "correlationId"
+      ],
+      "title": "FrontendAgentEvent",
+      "type": "object"
+    },
+    "FrontendAgentRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "correlationId": {
+          "title": "Correlationid",
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "conversation",
+            "planning",
+            "approval",
+            "execution",
+            "review"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        },
+        "sourceInterface": {
+          "enum": [
+            "tui",
+            "cli",
+            "acp",
+            "api",
+            "jupyter",
+            "web",
+            "automation",
+            "system",
+            "mock"
+          ],
+          "title": "Sourceinterface",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestId",
+        "sessionId",
+        "sourceInterface",
+        "mode",
+        "text",
+        "createdAt",
+        "correlationId"
+      ],
+      "title": "FrontendAgentRequest",
+      "type": "object"
+    },
+    "FrontendAgentResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "artifacts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendArtifact"
+          },
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "completedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completedat"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "estimate": {
+          "$ref": "#/$defs/FrontendEstimate"
+        },
+        "explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Explanation"
+        },
+        "nextAction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nextaction"
+        },
+        "permissionRequestId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Permissionrequestid"
+        },
+        "plan": {
+          "$ref": "#/$defs/FrontendPlan"
+        },
+        "recommendation": {
+          "$ref": "#/$defs/FrontendRecommendation"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "responseId": {
+          "title": "Responseid",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "accepted",
+            "awaiting_permission",
+            "completed",
+            "failed",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "responseId",
+        "sessionId",
+        "requestId",
+        "state",
+        "recommendation",
+        "plan",
+        "estimate",
+        "createdAt"
+      ],
+      "title": "FrontendAgentResponse",
+      "type": "object"
+    },
+    "FrontendAgentSession": {
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "currentRunId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Currentrunid"
+        },
+        "mode": {
+          "enum": [
+            "conversation",
+            "planning",
+            "approval",
+            "execution",
+            "review"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "projectId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Projectid"
+        },
+        "requestIds": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Requestids",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        },
+        "sourceInterface": {
+          "enum": [
+            "tui",
+            "cli",
+            "acp",
+            "api",
+            "jupyter",
+            "web",
+            "automation",
+            "system",
+            "mock"
+          ],
+          "title": "Sourceinterface",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "active",
+            "awaiting_approval",
+            "running",
+            "completed",
+            "failed",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "title": "Updatedat",
+          "type": "string"
+        },
+        "workspaceId": {
+          "title": "Workspaceid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sessionId",
+        "workspaceId",
+        "sourceInterface",
+        "mode",
+        "state",
+        "createdAt",
+        "updatedAt"
+      ],
+      "title": "FrontendAgentSession",
+      "type": "object"
+    },
+    "FrontendAgentSessionSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendAgentEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "permissions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendPermission"
+          },
+          "title": "Permissions",
+          "type": "array"
+        },
+        "requests": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendAgentRequest"
+          },
+          "title": "Requests",
+          "type": "array"
+        },
+        "responses": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendAgentResponse"
+          },
+          "title": "Responses",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "session": {
+          "$ref": "#/$defs/FrontendAgentSession"
+        }
+      },
+      "required": [
+        "session"
+      ],
+      "title": "FrontendAgentSessionSnapshot",
+      "type": "object"
+    },
     "FrontendApproval": {
       "additionalProperties": false,
       "properties": {
@@ -183,6 +599,96 @@
       "title": "FrontendCapabilities",
       "type": "object"
     },
+    "FrontendConversationSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "conversationId": {
+          "title": "Conversationid",
+          "type": "string"
+        },
+        "generating": {
+          "default": false,
+          "title": "Generating",
+          "type": "boolean"
+        },
+        "latestResponse": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontendAgentResponse"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "messages": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendMessage"
+          },
+          "title": "Messages",
+          "type": "array"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "session": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontendAgentSession"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "title": "Updatedat",
+          "type": "string"
+        },
+        "workflowId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workflowid"
+        }
+      },
+      "required": [
+        "conversationId",
+        "projectId",
+        "updatedAt"
+      ],
+      "title": "FrontendConversationSnapshot",
+      "type": "object"
+    },
     "FrontendError": {
       "additionalProperties": false,
       "description": "Stable error envelope exposed to every frontend transport.",
@@ -236,6 +742,37 @@
         "error"
       ],
       "title": "FrontendError",
+      "type": "object"
+    },
+    "FrontendEstimate": {
+      "additionalProperties": false,
+      "properties": {
+        "estimatedCost": {
+          "additionalProperties": true,
+          "title": "Estimatedcost",
+          "type": "object"
+        },
+        "estimatedDurationMs": {
+          "minimum": 0,
+          "title": "Estimateddurationms",
+          "type": "integer"
+        },
+        "resourceClass": {
+          "title": "Resourceclass",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "estimatedDurationMs",
+        "resourceClass"
+      ],
+      "title": "FrontendEstimate",
       "type": "object"
     },
     "FrontendEvent": {
@@ -313,6 +850,604 @@
       "title": "FrontendEvent",
       "type": "object"
     },
+    "FrontendMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "conversationId": {
+          "title": "Conversationid",
+          "type": "string"
+        },
+        "correlationId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correlationid"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "title": "Createdat",
+          "type": "string"
+        },
+        "messageId": {
+          "title": "Messageid",
+          "type": "string"
+        },
+        "modelId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modelid"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "providerId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Providerid"
+        },
+        "role": {
+          "enum": [
+            "user",
+            "assistant",
+            "system",
+            "tool"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "enum": [
+            "streaming",
+            "completed",
+            "failed",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "toolName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Toolname"
+        },
+        "toolOperation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tooloperation"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "title": "Updatedat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "messageId",
+        "conversationId",
+        "projectId",
+        "role",
+        "state",
+        "text",
+        "createdAt",
+        "updatedAt"
+      ],
+      "title": "FrontendMessage",
+      "type": "object"
+    },
+    "FrontendModelCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "models": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "providerPriority": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Providerpriority",
+          "type": "array"
+        },
+        "routingPolicy": {
+          "additionalProperties": true,
+          "title": "Routingpolicy",
+          "type": "object"
+        },
+        "runtimes": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Runtimes",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "title": "FrontendModelCatalog",
+      "type": "object"
+    },
+    "FrontendPermission": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "decidedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decidedat"
+        },
+        "expiresAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expiresat"
+        },
+        "kind": {
+          "enum": [
+            "policy",
+            "approval",
+            "confirmation",
+            "capability"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "permissionRequestId": {
+          "title": "Permissionrequestid",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "requestedAt": {
+          "format": "date-time",
+          "title": "Requestedat",
+          "type": "string"
+        },
+        "resources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Resources",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "sessionId": {
+          "title": "Sessionid",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "approved",
+            "rejected",
+            "expired",
+            "revoked"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "permissionRequestId",
+        "sessionId",
+        "requestId",
+        "kind",
+        "action",
+        "reason",
+        "state",
+        "requestedAt"
+      ],
+      "title": "FrontendPermission",
+      "type": "object"
+    },
+    "FrontendPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Createdat"
+        },
+        "createdByInvocationId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Createdbyinvocationid"
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "executionRequestId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Executionrequestid"
+        },
+        "planId": {
+          "title": "Planid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "steps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendPlanStep"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "workflowId": {
+          "title": "Workflowid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "planId",
+        "workflowId",
+        "version"
+      ],
+      "title": "FrontendPlan",
+      "type": "object"
+    },
+    "FrontendPlanStep": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptanceCriteria": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Acceptancecriteria",
+          "type": "array"
+        },
+        "agentType": {
+          "title": "Agenttype",
+          "type": "string"
+        },
+        "approvalRequired": {
+          "default": false,
+          "title": "Approvalrequired",
+          "type": "boolean"
+        },
+        "dependsOn": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependson",
+          "type": "array"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "expectedOutputs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Expectedoutputs",
+          "type": "array"
+        },
+        "inputArtifactIds": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Inputartifactids",
+          "type": "array"
+        },
+        "requiredCapabilities": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Requiredcapabilities",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "stepId": {
+          "title": "Stepid",
+          "type": "string"
+        },
+        "tier": {
+          "minimum": 0,
+          "title": "Tier",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stepId",
+        "tier",
+        "agentType",
+        "title",
+        "description"
+      ],
+      "title": "FrontendPlanStep",
+      "type": "object"
+    },
+    "FrontendProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Objective"
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "updatedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updatedat"
+        },
+        "version": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "projectId",
+        "name"
+      ],
+      "title": "FrontendProject",
+      "type": "object"
+    },
+    "FrontendProviderCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "credentials": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Credentials",
+          "type": "array"
+        },
+        "models": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "providers": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Providers",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "title": "FrontendProviderCatalog",
+      "type": "object"
+    },
+    "FrontendRecommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Actions",
+          "type": "array"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "rationale": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Rationale",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summary",
+        "confidence"
+      ],
+      "title": "FrontendRecommendation",
+      "type": "object"
+    },
     "FrontendRun": {
       "additionalProperties": false,
       "properties": {
@@ -333,9 +1468,33 @@
           ],
           "default": null
         },
+        "modelId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modelid"
+        },
         "projectId": {
           "title": "Projectid",
           "type": "string"
+        },
+        "providerId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Providerid"
         },
         "requestedAction": {
           "anyOf": [
@@ -361,10 +1520,15 @@
         },
         "state": {
           "enum": [
+            "draft",
+            "validating",
+            "awaiting_configuration",
             "accepted",
             "queued",
+            "provisioning",
             "running",
             "awaiting_approval",
+            "finalizing",
             "succeeded",
             "failed",
             "cancelled",
@@ -381,6 +1545,172 @@
         "state"
       ],
       "title": "FrontendRun",
+      "type": "object"
+    },
+    "FrontendRunAttempt": {
+      "additionalProperties": false,
+      "properties": {
+        "attemptId": {
+          "title": "Attemptid",
+          "type": "string"
+        },
+        "attemptNumber": {
+          "minimum": 1,
+          "title": "Attemptnumber",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attemptId",
+        "runId",
+        "attemptNumber",
+        "state"
+      ],
+      "title": "FrontendRunAttempt",
+      "type": "object"
+    },
+    "FrontendRunDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendRunAttempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "logs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendRunLog"
+          },
+          "title": "Logs",
+          "type": "array"
+        },
+        "run": {
+          "$ref": "#/$defs/FrontendRun"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "run"
+      ],
+      "title": "FrontendRunDetail",
+      "type": "object"
+    },
+    "FrontendRunLog": {
+      "additionalProperties": false,
+      "properties": {
+        "eventId": {
+          "title": "Eventid",
+          "type": "string"
+        },
+        "eventName": {
+          "title": "Eventname",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "info",
+            "error",
+            "output"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "occurredAt": {
+          "format": "date-time",
+          "title": "Occurredat",
+          "type": "string"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "eventId",
+        "runId",
+        "eventName",
+        "occurredAt",
+        "message",
+        "level"
+      ],
+      "title": "FrontendRunLog",
+      "type": "object"
+    },
+    "FrontendRuntimeCatalog": {
+      "additionalProperties": false,
+      "properties": {
+        "profiles": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Profiles",
+          "type": "array"
+        },
+        "revisions": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Revisions",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "title": "FrontendRuntimeCatalog",
       "type": "object"
     },
     "FrontendSession": {
@@ -424,6 +1754,18 @@
         "sessionId": {
           "title": "Sessionid",
           "type": "string"
+        },
+        "tenantId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tenantid"
         },
         "workspaceId": {
           "title": "Workspaceid",
@@ -580,6 +1922,63 @@
     },
     {
       "$ref": "#/$defs/FrontendUsage"
+    },
+    {
+      "$ref": "#/$defs/FrontendProviderCatalog"
+    },
+    {
+      "$ref": "#/$defs/FrontendModelCatalog"
+    },
+    {
+      "$ref": "#/$defs/FrontendRuntimeCatalog"
+    },
+    {
+      "$ref": "#/$defs/FrontendProject"
+    },
+    {
+      "$ref": "#/$defs/FrontendAgentSession"
+    },
+    {
+      "$ref": "#/$defs/FrontendAgentRequest"
+    },
+    {
+      "$ref": "#/$defs/FrontendAgentEvent"
+    },
+    {
+      "$ref": "#/$defs/FrontendPermission"
+    },
+    {
+      "$ref": "#/$defs/FrontendRecommendation"
+    },
+    {
+      "$ref": "#/$defs/FrontendPlanStep"
+    },
+    {
+      "$ref": "#/$defs/FrontendPlan"
+    },
+    {
+      "$ref": "#/$defs/FrontendEstimate"
+    },
+    {
+      "$ref": "#/$defs/FrontendAgentResponse"
+    },
+    {
+      "$ref": "#/$defs/FrontendAgentSessionSnapshot"
+    },
+    {
+      "$ref": "#/$defs/FrontendMessage"
+    },
+    {
+      "$ref": "#/$defs/FrontendConversationSnapshot"
+    },
+    {
+      "$ref": "#/$defs/FrontendRunAttempt"
+    },
+    {
+      "$ref": "#/$defs/FrontendRunLog"
+    },
+    {
+      "$ref": "#/$defs/FrontendRunDetail"
     }
   ]
 }

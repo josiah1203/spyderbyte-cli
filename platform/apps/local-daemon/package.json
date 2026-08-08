@@ -32,7 +32,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "local:dataset": "pnpm build && node dist/cli.js",
-    "local:server": "pnpm build && node dist/server.js",
+    "local:server": "pnpm --filter @agentic-platform/local-daemon... build && node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "node ../../scripts/verify/lint-package.mjs",
     "test": "vitest run --passWithNoTests --config ../../vitest.config.ts",

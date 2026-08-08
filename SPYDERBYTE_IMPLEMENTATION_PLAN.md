@@ -199,7 +199,7 @@ independent build boundary.
 | 0 — Freeze and decide | Complete | Source tags, hashes, exhaustive classification, candidate decisions, baseline evidence, and owner gate recorded; PR deferred by owner |
 | 1 — Compose without coupling | Complete | Platform subtree, typed frontend v1 seam, mock shell, adapter boundary, daemon launcher, retained visual tests, and independent verification recorded; PR deferred by owner |
 | 2 — Contract and transport | Complete | Versioned DTOs, authenticated/retrying HTTP+SSE transport, deterministic projection, ACP mapping, adapter ports, daemon lifecycle, and mock reconnect evidence recorded; PR deferred by owner |
-| 3 — Local golden path | Planned | Requires the typed client and deterministic projection from Wave 2 plus backend-resolved AgentSession/Run wiring |
+| 3 — Local golden path | Complete locally | Real daemon golden path, durable AgentSession/Run snapshots, provider/model/runtime facets, local ACP, and reproducible E2E evidence recorded in [`WAVE_3_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_3_EVIDENCE.md); credentialed-provider and publication gates remain external |
 | 4 — Computational parity | Planned | Requires the shared local AgentSession/Run vertical slice |
 | 5 — Organizational/hosted interfaces | Planned | Requires stable organization and cloud contracts |
 | 6 — Authority cutover | Planned | Requires substitution evidence for every retained primitive |
@@ -706,6 +706,16 @@ Run C/E vertical slices in parallel by resource family while U, K, and Q integra
 **Exit:** a local user starts `spyderbyte`, opens/creates a project, sends a prompt, observes a
 durable Run, handles an approval, receives artifacts and usage, reconnects, and inspects/retries or
 cancels the Run. The same project and history are visible through CLI, ACP, and API.
+
+**Wave 3 completion record — 2026-08-08:** The Python frontend now opens or creates the active
+backend project, reads the durable conversation and AgentSession snapshots, submits a prompt with
+optional backend model selection, consumes cursor-resumable SSE events, and reads typed Run,
+attempt, log, provider, model, runtime, approval, artifact, and projection facets. The local CLI
+and ACP command both use that client and the same local daemon path. `make verify-wave-3` passes
+the schema, lint, type, retained UI, provenance, and clean-workspace real-daemon checks. The
+deterministic `deterministic`/`fixture-model` provider is the available local smoke adapter;
+credentialed-provider smoke, organization approval/usage exercise, and GitHub publication remain
+environment or owner gates and are not represented as local proof.
 
 #### Wave 4 — Computational platform parity
 

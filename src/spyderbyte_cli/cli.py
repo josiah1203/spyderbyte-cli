@@ -34,6 +34,7 @@ class SpyderbyteCLI:
         base_url: str,
         token: str | None = None,
         workspace_id: str | None = None,
+        project_id: str | None = None,
         daemon: DaemonManager | None = None,
     ) -> SpyderbyteCLI:
         if backend == "mock":
@@ -47,7 +48,8 @@ class SpyderbyteCLI:
                     token=token,
                     workspace_id=workspace_id,
                     interface="cli",
-                )
+                ),
+                project_id=project_id,
             ),
             daemon=daemon,
         )
@@ -68,7 +70,7 @@ class SpyderbyteCLI:
         else:
             render_acceptance(acceptance)
         async for event in self.client.events(after_cursor=1 if session.mode == "mock" else 0):
-            if event.kind == "session.ready" or event.run_id not in {None, acceptance.run_id}:
+            if event.kind == "session.ready" or event.run_id != acceptance.run_id:
                 continue
             if as_json:
                 typer.echo(event.model_dump_json(by_alias=True))
@@ -119,6 +121,9 @@ def main(
     workspace_id: Annotated[
         str | None, typer.Option(help="Workspace identity for the API request.")
     ] = None,
+    project_id: Annotated[
+        str | None, typer.Option("--project", help="Project ID for the local conversation.")
+    ] = None,
     prompt: Annotated[str | None, typer.Option("--prompt", "-p")] = None,
     as_json: Annotated[bool, typer.Option("--json", help="Emit newline-delimited JSON.")] = False,
 ) -> None:
@@ -135,9 +140,13 @@ def main(
             base_url=url,
             token=token,
             workspace_id=workspace_id,
+            project_id=project_id,
             daemon=daemon_manager,
         )
-        asyncio.run(client.run_once(prompt, as_json))
+        try:
+            asyncio.run(client.run_once(prompt, as_json))
+        finally:
+            daemon_manager.stop()
         return
     if not mock:
         typer.echo(
@@ -179,19 +188,48 @@ def daemon(
 @app.command()
 def acp(
     mock: Annotated[bool, typer.Option(help="Use the deterministic frontend mock.")] = False,
+    backend: Annotated[str, typer.Option(help="Frontend backend: mock or local.")] = "mock",
+    url: Annotated[
+        str, typer.Option("--url", help="Spyderbyte local/hosted API URL.")
+    ] = "http://127.0.0.1:8787",
+    token: Annotated[
+        str | None, typer.Option(help="Bearer token; never persisted by the ACP bridge.")
+    ] = None,
+    workspace_id: Annotated[
+        str | None, typer.Option(help="Workspace identity for the API request.")
+    ] = None,
+    project_id: Annotated[
+        str | None, typer.Option("--project", help="Project ID for the local conversation.")
+    ] = None,
     prompt: Annotated[str | None, typer.Option("--prompt", "-p")] = None,
     as_json: Annotated[bool, typer.Option("--json")] = True,
 ) -> None:
     """Run the ACP mapping boundary over a Spyderbyte AgentSession."""
 
-    if not mock:
-        typer.echo("ACP requires --mock until the local ACP process transport is configured.")
+    selected_backend = "mock" if mock else backend.lower()
+    if selected_backend == "mock":
+        asyncio.run(_run_acp(MockFrontendClient(), prompt, as_json))
+        return
+    if selected_backend != "local":
+        typer.echo("Unknown ACP backend. Use --backend local or --mock.")
         raise typer.Exit(2)
-    asyncio.run(_run_acp(prompt, as_json))
+    daemon_manager = DaemonManager(url=url)
+    try:
+        daemon_manager.ensure()
+        client = SpyderbyteCLI.create(
+            backend="local",
+            base_url=url,
+            token=token,
+            workspace_id=workspace_id,
+            project_id=project_id,
+        ).client
+        asyncio.run(_run_acp(client, prompt, as_json))
+    finally:
+        daemon_manager.stop()
 
 
-async def _run_acp(prompt: str | None, as_json: bool) -> None:
-    bridge = AcpSessionBridge(MockFrontendClient())
+async def _run_acp(client: FrontendClient, prompt: str | None, as_json: bool) -> None:
+    bridge = AcpSessionBridge(client)
     initialization = await bridge.initialize()
     if as_json:
         typer.echo(json.dumps(initialization, sort_keys=True))
