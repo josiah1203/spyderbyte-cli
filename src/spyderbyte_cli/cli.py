@@ -21,7 +21,7 @@ from spyderbyte_cli.shell import render_acceptance, render_event, render_session
 app = typer.Typer(
     add_completion=False,
     invoke_without_command=True,
-    help="Spyderbyte terminal shell, derived in part from Kimi CLI.",
+    help="Spyderbyte terminal shell over the shared AgentSession and Run API.",
 )
 
 
@@ -421,6 +421,504 @@ def resource_command(
             run_id=run_id,
             input_json=input_json,
             stream=stream,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+def _parent_backend(ctx: typer.Context) -> tuple[str, str, str | None, str | None]:
+    parent_params = ctx.parent.params if ctx.parent is not None else {}
+    selected_backend = (
+        "mock" if parent_params.get("mock", False) else parent_params.get("backend", "mock")
+    )
+    return (
+        str(selected_backend).lower(),
+        str(parent_params.get("url", "http://127.0.0.1:8787")),
+        parent_params.get("token"),
+        parent_params.get("workspace_id"),
+    )
+
+
+async def _with_client(
+    *,
+    backend: str,
+    base_url: str,
+    token: str | None,
+    workspace_id: str | None,
+    operation,
+):
+    daemon_manager: DaemonManager | None = None
+    if backend == "mock":
+        client: FrontendClient = MockFrontendClient()
+    elif backend == "local":
+        daemon_manager = DaemonManager(url=base_url)
+        daemon_manager.ensure()
+        client = SpyderbyteCLI.create(
+            backend="local",
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+        ).client
+    else:
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "error": "unknown Spyderbyte backend",
+                    "code": "VALIDATION_SCHEMA_MISMATCH",
+                    "details": {"backend": backend},
+                },
+                sort_keys=True,
+            )
+        )
+        return 2
+    try:
+        return await operation(client)
+    except FrontendTransportError as error:
+        if error.error is not None:
+            typer.echo(error.error.model_dump_json(by_alias=True))
+        else:
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "error": str(error),
+                        "code": "EXTERNAL_DEPENDENCY_UNAVAILABLE",
+                    },
+                    sort_keys=True,
+                )
+            )
+        return 1
+    finally:
+        if isinstance(client, HttpFrontendClient):
+            await client.transport.close()
+        if daemon_manager is not None:
+            daemon_manager.stop()
+
+
+@app.command("org")
+def org_command(
+    ctx: typer.Context,
+    action: str = typer.Argument("list", help="list or show"),
+    organization_id: str | None = typer.Argument(None),
+) -> None:
+    """List or show organization governance overview."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        if action == "list":
+            organizations = await client.governance.list_organizations()
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "organizations": [item.model_dump(by_alias=True) for item in organizations],
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 0
+        if action == "show":
+            selected = organization_id
+            if selected is None:
+                organizations = await client.governance.list_organizations()
+                if not organizations:
+                    typer.echo(
+                        json.dumps(
+                            {
+                                "schemaVersion": 1,
+                                "error": "no organization is available",
+                                "code": "ORGANIZATION_NOT_FOUND",
+                            },
+                            sort_keys=True,
+                        )
+                    )
+                    return 2
+                selected = organizations[0].organization_id
+            overview = await client.governance.overview(selected)
+            typer.echo(overview.model_dump_json(by_alias=True))
+            return 0
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "error": "org action must be list or show",
+                    "code": "VALIDATION_SCHEMA_MISMATCH",
+                },
+                sort_keys=True,
+            )
+        )
+        return 2
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("users")
+def users_command(
+    ctx: typer.Context,
+    organization_id: str | None = typer.Argument(None),
+) -> None:
+    """List organization members."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        selected = organization_id
+        if selected is None:
+            organizations = await client.governance.list_organizations()
+            selected = organizations[0].organization_id if organizations else None
+        if selected is None:
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "error": "organization_id is required",
+                        "code": "VALIDATION_SCHEMA_MISMATCH",
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 2
+        members = await client.governance.list_members(selected)
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "organizationId": selected,
+                    "members": [item.model_dump(by_alias=True) for item in members],
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("policies")
+def policies_command(
+    ctx: typer.Context,
+    organization_id: str | None = typer.Argument(None),
+) -> None:
+    """List organization policies."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        selected = organization_id
+        if selected is None:
+            organizations = await client.governance.list_organizations()
+            selected = organizations[0].organization_id if organizations else None
+        if selected is None:
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "error": "organization_id is required",
+                        "code": "VALIDATION_SCHEMA_MISMATCH",
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 2
+        policies = await client.governance.list_policies(selected)
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "organizationId": selected,
+                    "policies": [item.model_dump(by_alias=True) for item in policies],
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("budgets")
+def budgets_command(
+    ctx: typer.Context,
+    organization_id: str | None = typer.Argument(None),
+) -> None:
+    """List organization budgets and usage."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        selected = organization_id
+        if selected is None:
+            organizations = await client.governance.list_organizations()
+            selected = organizations[0].organization_id if organizations else None
+        if selected is None:
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "error": "organization_id is required",
+                        "code": "VALIDATION_SCHEMA_MISMATCH",
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 2
+        budgets = await client.governance.list_budgets(selected)
+        usage = await client.governance.usage(selected)
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "organizationId": selected,
+                    "budgets": [item.model_dump(by_alias=True) for item in budgets],
+                    "usage": usage,
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("approvals")
+def approvals_command(ctx: typer.Context) -> None:
+    """List organization approvals through the shared API."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        approvals = await client.list_approvals()
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "approvals": [item.model_dump(by_alias=True) for item in approvals],
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("audit")
+def audit_command(
+    ctx: typer.Context,
+    organization_id: str | None = typer.Argument(None),
+) -> None:
+    """Verify and read organization audit history."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        selected = organization_id
+        if selected is None:
+            organizations = await client.governance.list_organizations()
+            selected = organizations[0].organization_id if organizations else None
+        if selected is None:
+            typer.echo(
+                json.dumps(
+                    {
+                        "schemaVersion": 1,
+                        "error": "organization_id is required",
+                        "code": "VALIDATION_SCHEMA_MISMATCH",
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 2
+        records = await client.governance.audit(selected)
+        verified = await client.governance.verify_audit(selected)
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "organizationId": selected,
+                    "records": [item.model_dump(by_alias=True) for item in records],
+                    "verified": verified,
+                },
+                sort_keys=True,
+            )
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("workspace")
+def workspace_command(
+    ctx: typer.Context,
+    facet: str = typer.Argument(
+        "context",
+        help="context, intake, inbox, watch, recommendations, or status",
+    ),
+) -> None:
+    """Inspect workspace context facets over the shared API."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        if facet == "status":
+            snapshot = await client.governance.read_workspace()
+            typer.echo(snapshot.model_dump_json(by_alias=True))
+            return 0
+        payload = await client.governance.read_workspace_facet(facet)
+        typer.echo(
+            json.dumps({"schemaVersion": 1, "facet": facet, "data": payload}, sort_keys=True)
+        )
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("onboarding")
+def onboarding_command(
+    ctx: typer.Context,
+    action: str = typer.Argument("status", help="status or choose"),
+    choice: str | None = typer.Argument(None),
+) -> None:
+    """Show or choose first-run onboarding options."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        if action == "status":
+            status = await client.governance.read_onboarding()
+            typer.echo(status.model_dump_json(by_alias=True))
+            return 0
+        if action == "choose":
+            if choice is None:
+                typer.echo(
+                    json.dumps(
+                        {
+                            "schemaVersion": 1,
+                            "error": "onboarding choice is required",
+                            "code": "VALIDATION_SCHEMA_MISMATCH",
+                        },
+                        sort_keys=True,
+                    )
+                )
+                return 2
+            status = await client.governance.choose_onboarding(choice)
+            typer.echo(status.model_dump_json(by_alias=True))
+            return 0
+        typer.echo(
+            json.dumps(
+                {
+                    "schemaVersion": 1,
+                    "error": "onboarding action must be status or choose",
+                    "code": "VALIDATION_SCHEMA_MISMATCH",
+                },
+                sort_keys=True,
+            )
+        )
+        return 2
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
+        )
+    )
+    if exit_code:
+        raise typer.Exit(exit_code)
+
+
+@app.command("license")
+def license_command(ctx: typer.Context) -> None:
+    """Show local/hosted license status."""
+
+    backend, base_url, token, workspace_id = _parent_backend(ctx)
+
+    async def run(client: FrontendClient) -> int:
+        status = await client.governance.license_status()
+        typer.echo(status.model_dump_json(by_alias=True))
+        return 0
+
+    exit_code = asyncio.run(
+        _with_client(
+            backend=backend,
+            base_url=base_url,
+            token=token,
+            workspace_id=workspace_id,
+            operation=run,
         )
     )
     if exit_code:
