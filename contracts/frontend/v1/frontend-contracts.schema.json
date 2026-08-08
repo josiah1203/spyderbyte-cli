@@ -560,6 +560,90 @@
       "title": "FrontendArtifact",
       "type": "object"
     },
+    "FrontendAuditRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "decision": {
+          "title": "Decision",
+          "type": "string"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "organizationId",
+        "decision"
+      ],
+      "title": "FrontendAuditRecord",
+      "type": "object"
+    },
+    "FrontendBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "title": "Currency",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "hardLimitMinor": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hardlimitminor"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "softLimitMinor": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Softlimitminor"
+        }
+      },
+      "required": [
+        "organizationId"
+      ],
+      "title": "FrontendBudget",
+      "type": "object"
+    },
     "FrontendCapabilities": {
       "additionalProperties": false,
       "properties": {
@@ -850,6 +934,184 @@
       "title": "FrontendEvent",
       "type": "object"
     },
+    "FrontendGovernanceDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "inputDigest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inputdigest"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "outcome": {
+          "title": "Outcome",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "organizationId",
+        "outcome"
+      ],
+      "title": "FrontendGovernanceDecision",
+      "type": "object"
+    },
+    "FrontendGovernanceOverview": {
+      "additionalProperties": false,
+      "properties": {
+        "budgets": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Budgets",
+          "type": "array"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "membership": {
+          "additionalProperties": true,
+          "title": "Membership",
+          "type": "object"
+        },
+        "organization": {
+          "additionalProperties": true,
+          "title": "Organization",
+          "type": "object"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "policies": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Policies",
+          "type": "array"
+        },
+        "providers": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Providers",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "organizationId"
+      ],
+      "title": "FrontendGovernanceOverview",
+      "type": "object"
+    },
+    "FrontendLicenseStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "FrontendLicenseStatus",
+      "type": "object"
+    },
+    "FrontendMembership": {
+      "additionalProperties": false,
+      "properties": {
+        "actorId": {
+          "title": "Actorid",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "role": {
+          "title": "Role",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "scopes": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Scopes",
+          "type": "array"
+        },
+        "status": {
+          "default": "active",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "organizationId",
+        "actorId",
+        "role"
+      ],
+      "title": "FrontendMembership",
+      "type": "object"
+    },
     "FrontendMessage": {
       "additionalProperties": false,
       "properties": {
@@ -1021,6 +1283,74 @@
         }
       },
       "title": "FrontendModelCatalog",
+      "type": "object"
+    },
+    "FrontendOnboardingStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "choices": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Choices",
+          "type": "array"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "FrontendOnboardingStatus",
+      "type": "object"
+    },
+    "FrontendOrganization": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "organizationId",
+        "name"
+      ],
+      "title": "FrontendOrganization",
       "type": "object"
     },
     "FrontendPermission": {
@@ -1300,6 +1630,36 @@
       "title": "FrontendPlanStep",
       "type": "object"
     },
+    "FrontendPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "organizationId": {
+          "title": "Organizationid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "organizationId",
+        "version"
+      ],
+      "title": "FrontendPolicy",
+      "type": "object"
+    },
     "FrontendProject": {
       "additionalProperties": false,
       "properties": {
@@ -1446,6 +1806,275 @@
         "confidence"
       ],
       "title": "FrontendRecommendation",
+      "type": "object"
+    },
+    "FrontendResourceCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "operations": {
+          "items": {
+            "enum": [
+              "discover",
+              "invoke",
+              "observe",
+              "resume",
+              "cancel",
+              "inspect",
+              "compare",
+              "publish",
+              "export",
+              "handoff"
+            ],
+            "type": "string"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "routeFamily": {
+          "title": "Routefamily",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operations",
+        "routeFamily"
+      ],
+      "title": "FrontendResourceCapability",
+      "type": "object"
+    },
+    "FrontendResourceRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "enum": [
+            "discover",
+            "invoke",
+            "observe",
+            "resume",
+            "cancel",
+            "inspect",
+            "compare",
+            "publish",
+            "export",
+            "handoff"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "resourceId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resourceid"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operation"
+      ],
+      "title": "FrontendResourceRequest",
+      "type": "object"
+    },
+    "FrontendResourceResult": {
+      "additionalProperties": false,
+      "properties": {
+        "artifactIds": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifactids",
+          "type": "array"
+        },
+        "capabilities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendResourceCapability"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontendError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "handoff": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Handoff"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "lineage": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Lineage",
+          "type": "array"
+        },
+        "operation": {
+          "enum": [
+            "discover",
+            "invoke",
+            "observe",
+            "resume",
+            "cancel",
+            "inspect",
+            "compare",
+            "publish",
+            "export",
+            "handoff"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "resourceId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resourceid"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "default": "unknown",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operation"
+      ],
+      "title": "FrontendResourceResult",
       "type": "object"
     },
     "FrontendRun": {
@@ -1843,6 +2472,48 @@
       "title": "FrontendUsage",
       "type": "object"
     },
+    "FrontendWorkspaceSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "mode": {
+          "default": "personal_local",
+          "title": "Mode",
+          "type": "string"
+        },
+        "organizationId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Organizationid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "workspaceId": {
+          "title": "Workspaceid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workspaceId"
+      ],
+      "title": "FrontendWorkspaceSnapshot",
+      "type": "object"
+    },
     "PromptAcceptance": {
       "additionalProperties": false,
       "properties": {
@@ -1931,6 +2602,45 @@
     },
     {
       "$ref": "#/$defs/FrontendRuntimeCatalog"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceCapability"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceRequest"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceResult"
+    },
+    {
+      "$ref": "#/$defs/FrontendOrganization"
+    },
+    {
+      "$ref": "#/$defs/FrontendMembership"
+    },
+    {
+      "$ref": "#/$defs/FrontendPolicy"
+    },
+    {
+      "$ref": "#/$defs/FrontendBudget"
+    },
+    {
+      "$ref": "#/$defs/FrontendAuditRecord"
+    },
+    {
+      "$ref": "#/$defs/FrontendGovernanceOverview"
+    },
+    {
+      "$ref": "#/$defs/FrontendGovernanceDecision"
+    },
+    {
+      "$ref": "#/$defs/FrontendLicenseStatus"
+    },
+    {
+      "$ref": "#/$defs/FrontendOnboardingStatus"
+    },
+    {
+      "$ref": "#/$defs/FrontendWorkspaceSnapshot"
     },
     {
       "$ref": "#/$defs/FrontendProject"

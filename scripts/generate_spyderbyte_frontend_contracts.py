@@ -16,18 +16,30 @@ from spyderbyte_cli.frontend.models import (
     FrontendAgentSessionSnapshot,
     FrontendApproval,
     FrontendArtifact,
+    FrontendAuditRecord,
+    FrontendBudget,
     FrontendConversationSnapshot,
     FrontendError,
     FrontendEstimate,
     FrontendEvent,
+    FrontendGovernanceDecision,
+    FrontendGovernanceOverview,
+    FrontendLicenseStatus,
+    FrontendMembership,
     FrontendMessage,
     FrontendModelCatalog,
+    FrontendOnboardingStatus,
+    FrontendOrganization,
     FrontendPermission,
     FrontendPlan,
     FrontendPlanStep,
+    FrontendPolicy,
     FrontendProject,
     FrontendProviderCatalog,
     FrontendRecommendation,
+    FrontendResourceCapability,
+    FrontendResourceRequest,
+    FrontendResourceResult,
     FrontendRun,
     FrontendRunAttempt,
     FrontendRunDetail,
@@ -35,6 +47,7 @@ from spyderbyte_cli.frontend.models import (
     FrontendRuntimeCatalog,
     FrontendSession,
     FrontendUsage,
+    FrontendWorkspaceSnapshot,
     PromptAcceptance,
 )
 
@@ -56,6 +69,19 @@ def render() -> str:
         | FrontendProviderCatalog
         | FrontendModelCatalog
         | FrontendRuntimeCatalog
+        | FrontendResourceCapability
+        | FrontendResourceRequest
+        | FrontendResourceResult
+        | FrontendOrganization
+        | FrontendMembership
+        | FrontendPolicy
+        | FrontendBudget
+        | FrontendAuditRecord
+        | FrontendGovernanceOverview
+        | FrontendGovernanceDecision
+        | FrontendLicenseStatus
+        | FrontendOnboardingStatus
+        | FrontendWorkspaceSnapshot
         | FrontendProject
         | FrontendAgentSession
         | FrontendAgentRequest

@@ -10,6 +10,11 @@ from datetime import UTC, datetime
 from typing import Literal, Protocol, cast
 from urllib.parse import quote
 
+from spyderbyte_cli.frontend.governance import (
+    FrontendGovernanceClient,
+    MockGovernanceClient,
+    NativeGovernanceClient,
+)
 from spyderbyte_cli.frontend.models import (
     EventPage,
     FrontendAgentEvent,
@@ -43,10 +48,21 @@ from spyderbyte_cli.frontend.models import (
     FrontendSession,
     PromptAcceptance,
 )
+from spyderbyte_cli.frontend.resources import (
+    FrontendResourceClient,
+    MockNativeResourceClient,
+    NativeResourceClient,
+)
 from spyderbyte_cli.frontend.transport import FrontendTransport, FrontendTransportError
 
 
 class FrontendClient(Protocol):
+    @property
+    def resources(self) -> FrontendResourceClient: ...
+
+    @property
+    def governance(self) -> FrontendGovernanceClient: ...
+
     async def open_session(self) -> FrontendSession: ...
 
     async def send_prompt(
@@ -73,6 +89,16 @@ class FrontendClient(Protocol):
 
     async def retry_run(self, run_id: str) -> Mapping[str, object]: ...
 
+    async def list_approvals(self) -> tuple[FrontendApproval, ...]: ...
+
+    async def decide_approval(
+        self,
+        approval_id: str,
+        decision: Literal["approve", "reject", "revoke"],
+        *,
+        reason: str | None = None,
+    ) -> Mapping[str, object]: ...
+
 
 def _new_id(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex}"
@@ -93,6 +119,8 @@ class MockFrontendClient:
 
     def __init__(self) -> None:
         self._now = datetime(2026, 8, 8, tzinfo=UTC)
+        self.resources = MockNativeResourceClient()
+        self.governance = MockGovernanceClient()
         self._session = FrontendSession(
             session_id="fs_mock_01",
             project_id="prj_mock_01",
@@ -217,6 +245,29 @@ class MockFrontendClient:
             raise ValueError(f"unknown mock run: {run_id}")
         return {"runId": run_id, "state": "accepted"}
 
+    async def list_approvals(self) -> tuple[FrontendApproval, ...]:
+        return (
+            FrontendApproval(
+                approval_id="approval_mock_01",
+                action={"type": "deployment.execute"},
+                state="pending",
+                run_id="run_mock_01",
+            ),
+        )
+
+    async def decide_approval(
+        self,
+        approval_id: str,
+        decision: Literal["approve", "reject", "revoke"],
+        *,
+        reason: str | None = None,
+    ) -> Mapping[str, object]:
+        return {
+            "approvalId": approval_id,
+            "state": decision,
+            "reason": reason,
+        }
+
     async def events(
         self,
         *,
@@ -245,6 +296,8 @@ class HttpFrontendClient:
         project_objective: str | None = None,
     ) -> None:
         self.transport = transport
+        self.resources = NativeResourceClient(transport)
+        self.governance = NativeGovernanceClient(transport)
         self.project_id = project_id
         self.agent_session_id = agent_session_id
         self._capabilities = capabilities or FrontendCapabilities(api_version="v1")

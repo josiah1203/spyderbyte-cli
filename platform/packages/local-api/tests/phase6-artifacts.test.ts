@@ -173,6 +173,18 @@ describe('Phase 6 terminal artifact and workspace surfaces', () => {
         body: { status: 'rendered', title: expect.any(String) },
       });
       await expect(
+        handleLocalApiRequest({ method: 'GET', path: '/v1/visualizations/catalog' }, api),
+      ).resolves.toMatchObject({
+        statusCode: 200,
+        body: {
+          schemaVersion: 1,
+          resourceType: 'visualization',
+          available: true,
+          types: expect.arrayContaining(['table', 'bar', 'time-series']),
+          operations: expect.arrayContaining(['discover', 'invoke', 'inspect']),
+        },
+      });
+      await expect(
         handleLocalApiRequest({ method: 'GET', path: '/v1/workspace/intake' }, api),
       ).resolves.toMatchObject({
         statusCode: 200,

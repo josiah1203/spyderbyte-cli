@@ -1,7 +1,7 @@
 # Spyderbyte Production Implementation Plan
 
 > **Superseded:** This is a historical product-delivery overlay. The authoritative plan going
-> forward is [`SPYDERBYTE_DECLARATIVE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_DECLARATIVE_IMPLEMENTATION_PLAN.md).
+> forward is [`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md).
 > Keep this file as evidence; do not use it for new status updates or phase decisions.
 
 **Status:** Historical product-delivery overlay; superseded  

@@ -184,22 +184,21 @@ independent build boundary.
 
 **Overall status: In progress.**
 
-- The local platform is imported under `platform/` with its source history preserved and a
-  hermetic composed verification command.
-- The Kimi fork remains the terminal foundation. Waves 0 and 1 are complete locally: provenance,
-  classification, composition, frontend contracts, the mock shell, isolated inherited
-  primitives, daemon discovery, and visual-regression evidence are recorded.
+- The local platform is implemented and locally verified for the scopes recorded in the
+  historical evidence, but it is not present in the Kimi-based GitHub integration repository.
+- The Kimi fork is reviewed and selected as the terminal foundation. Wave 0 provenance,
+  classification, baseline verification, and decision evidence are in progress on
+  `codex/wave-0-freeze`; source composition has not started.
 - Hosted deployment/certification, production commercial decisions, credentialed/native release,
   and composed Python-plus-sidecar release evidence remain open.
-- Wave 2 — Contract and transport foundation is complete locally; real model credentials and the
-  durable local golden path remain intentionally outside this wave.
+- The first executable program increment is **Wave 0 — Freeze and decide** in Section 8.2.
 
 | Wave | Status | Evidence or next gate |
 | ---- | ------ | --------------------- |
 | 0 — Freeze and decide | Complete | Source tags, hashes, exhaustive classification, candidate decisions, baseline evidence, and owner gate recorded; PR deferred by owner |
-| 1 — Compose without coupling | Complete | Platform subtree, typed frontend v1 seam, mock shell, adapter boundary, daemon launcher, retained visual tests, and independent verification recorded; PR deferred by owner |
-| 2 — Contract and transport | Complete | Versioned DTOs, authenticated/retrying HTTP+SSE transport, deterministic projection, ACP mapping, adapter ports, daemon lifecycle, and mock reconnect evidence recorded; PR deferred by owner |
-| 3 — Local golden path | Complete locally | Real daemon golden path, durable AgentSession/Run snapshots, provider/model/runtime facets, local ACP, and reproducible E2E evidence recorded in [`WAVE_3_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_3_EVIDENCE.md); credentialed-provider and publication gates remain external |
+| 1 — Compose without coupling | Planned | Requires accepted Wave 0 decisions and PR |
+| 2 — Contract and transport | Planned | Requires composed independent build roots and stable schema fixtures |
+| 3 — Local golden path | Planned | Requires typed Python client and deterministic event projection |
 | 4 — Computational parity | Planned | Requires the shared local AgentSession/Run vertical slice |
 | 5 — Organizational/hosted interfaces | Planned | Requires stable organization and cloud contracts |
 | 6 — Authority cutover | Planned | Requires substitution evidence for every retained primitive |
@@ -676,13 +675,6 @@ Run B, C, U, K, E, A, P, and Q in parallel.
 Kimi product authority. Any retained runtime primitive is reachable only through a Spyderbyte
 adapter and passes its initial conformance/security gate.
 
-**Wave 2 completion record — 2026-08-08:** The versioned frontend contract now covers session,
-prompt acceptance, errors, event pages, Runs, approvals, artifacts, and usage. The Python client
-uses an authenticated, idempotency-aware transport with bounded retries and SSE cursor resume;
-duplicate/out-of-order/gap behavior is deterministic through `FrontendProjector`. ACP mapping,
-provider/tool/process/background adapter seams, and cross-platform daemon start/stop/restart/
-diagnostics are covered by focused tests. `make verify-wave-2` is the local exit command.
-
 #### Wave 3 — Local golden-path wiring
 
 Run C/E vertical slices in parallel by resource family while U, K, and Q integrate continuously.
@@ -706,16 +698,6 @@ Run C/E vertical slices in parallel by resource family while U, K, and Q integra
 **Exit:** a local user starts `spyderbyte`, opens/creates a project, sends a prompt, observes a
 durable Run, handles an approval, receives artifacts and usage, reconnects, and inspects/retries or
 cancels the Run. The same project and history are visible through CLI, ACP, and API.
-
-**Wave 3 completion record — 2026-08-08:** The Python frontend now opens or creates the active
-backend project, reads the durable conversation and AgentSession snapshots, submits a prompt with
-optional backend model selection, consumes cursor-resumable SSE events, and reads typed Run,
-attempt, log, provider, model, runtime, approval, artifact, and projection facets. The local CLI
-and ACP command both use that client and the same local daemon path. `make verify-wave-3` passes
-the schema, lint, type, retained UI, provenance, and clean-workspace real-daemon checks. The
-deterministic `deterministic`/`fixture-model` provider is the available local smoke adapter;
-credentialed-provider smoke, organization approval/usage exercise, and GitHub publication remain
-environment or owner gates and are not represented as local proof.
 
 #### Wave 4 — Computational platform parity
 

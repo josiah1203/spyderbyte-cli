@@ -1,21 +1,44 @@
 # Spyderbyte Declarative Implementation Plan
 
-**Status:** Authoritative going-forward plan  
-**Version:** 1.0  
-**Date:** 2026-08-07  
-**Repository:** `/Users/josiah/aug`  
-**Product:** Spyderbyte  
+**Status:** Historical implementation record; superseded
+**Version:** 1.2
+**Date:** 2026-08-07
+**Local platform source:** `/Users/josiah/aug`
+**Integration repository:** `github.com/josiah1203/spyderbyte-cli`
+**Product:** Spyderbyte
 **Canonical executable:** `spyderbyte`
 
-This document supersedes the execution authority of:
+> **Do not use this document to select or record new work.** The sole active implementation and
+> progress authority is [`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md).
+> This file is retained for detailed local-platform phase history and evidence only.
+
+> **Kimi integration amendment — 2026-08-07:** The terminal-source decision has changed. The
+> connected GitHub repository is a Kimi CLI fork at commit
+> `cbc15c076d17f70fec9f89c90c0502e68657f505`; it contains none of this local platform. The local
+> platform is at `2579ce2b195ba394509f7b4ded6cc6dbcddbfebe` and must be imported deliberately rather
+> than pushed over or blindly merged with the Kimi history. All Codex-specific shell-source,
+> migration-order, and terminal phase instructions below are retained as historical evidence but
+> are superseded by
+> [`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md). Backend,
+> product, security, commercial, Universal Run, and authority requirements in this document remain
+> in force.
+
+> **Inherited-primitive amendment — 2026-08-07:** “Spyderbyte owns the backend” defines product
+> authority, not mandatory reimplementation. Reviewed Kimi context, compaction, retry, streaming,
+> provider-transport, tool, process, checkpoint, and background-task mechanics may be retained
+> beneath Spyderbyte-owned adapter contracts. They may not own durable state, policy, credentials,
+> provider/runtime selection, approvals, Runs, usage, audit, identity, telemetry consent, or
+> updates. Adoption gates and the component audit are defined in the Kimi integration plan.
+
+Historically, this document superseded the execution authority of:
 
 - [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md);
 - [`SPYDERBYTE_PRODUCTION_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_PRODUCTION_IMPLEMENTATION_PLAN.md);
 - [`AGENTIC_PLATFORM_IMPLEMENTATION_PLAYBOOK.md`](AGENTIC_PLATFORM_IMPLEMENTATION_PLAYBOOK.md).
 
-Those documents remain historical implementation records and evidence sources. New work, status
-updates, phase decisions, and completion records must be made here. If an older document conflicts
-with this one, this plan wins unless a newer ADR explicitly changes it.
+Those documents and this one remain historical implementation records and evidence sources. New
+work, status updates, phase decisions, and completion records must be made only in
+[`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md).
 
 The required Codex source audit is recorded in
 [`CODEX_MIGRATION_MATRIX.md`](CODEX_MIGRATION_MATRIX.md). No Codex-derived source has been
@@ -43,8 +66,8 @@ The implementation agent must follow these rules for every change:
    of truth; clients render and request, but do not decide.
 4. Implement the smallest complete vertical increment: contract, implementation, tests, evidence,
    and plan status update together.
-5. Do not import or adapt Codex source until Phase 0 migration evidence and the required ADRs are
-   complete.
+5. Do not import or adapt terminal source until the source freeze, provenance, repository
+   composition, licensing, and boundary gates in the Kimi integration plan are complete.
 6. Do not mark a phase complete when a path is simulated, projection-only, unverified, or blocked
    by an unresolved security, licensing, product, topology, or commercial decision.
 7. Preserve authority, approval, audit, artifact immutability, lineage, secret isolation, budget,
@@ -72,30 +95,31 @@ and Hosted Execution Platform` (pasted source, version 1.0).
 2. `Spyderbyte CLI/TUI Replatforming PRD — Codex CLI Shell Adoption and Spyderbyte Runtime
 Integration` (pasted source, version 1.0).
 3. The current Spyderbyte implementation in `/Users/josiah/aug`.
-4. The available Codex checkout at `/Users/josiah/Downloads/codexcli-main`.
+4. The connected Kimi CLI fork at `github.com/josiah1203/spyderbyte-cli`, reviewed at
+   `cbc15c076d17f70fec9f89c90c0502e68657f505`.
 
 The requirements are reconciled as follows:
 
-| Requirement                 | Declarative decision                                                                                                                                                                                                                                                                      |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Codex shell adoption        | Codex-derived code supplies terminal interaction primitives only. Spyderbyte owns the agent, clients, domain, policy, Runs, providers, runtimes, artifacts, billing, identity, telemetry, configuration, and updates.                                                                     |
-| Existing Cline-derived code | `packages/cline-adapter` remains a compatibility boundary during migration. It is not the final Spyderbyte Agent and cannot own tools, policy, sessions, or Runs.                                                                                                                         |
-| Conversation-first product  | The CLI/TUI is the primary daily control surface. Web and desktop are rich artifact, visual inspection, administration, and distribution surfaces, not competing control planes.                                                                                                          |
-| Universal execution         | Every material action becomes one Spyderbyte `Run`, with `ExecutionAttempt` records for retries. Codex turns, rollouts, or ACP requests are not alternate execution entities.                                                                                                             |
-| Local-first product         | Local-only mode works offline without a Spyderbyte account. BYOK and local models remain first-class. Cloud state is lazy and optional until requested.                                                                                                                                   |
-| Cloud                       | Local, customer-owned, and Spyderbyte-managed execution use the same contracts. Initial hosted adapters may target OpenRouter, Modal, Postgres, R2, a durable workflow provider, Stripe, and OpenTelemetry/Sentry, but vendor names never become domain types.                            |
-| ACP                         | `spyderbyte acp` is a transport adapter over the same `AgentSession` and Agent events as TUI, CLI, and API. ACP is not the business-logic layer and Codex app-server protocol is not ACP authority.                                                                                       |
-| Commercial model            | Individual platform use is free; personal BYOK/local/customer infrastructure is not platform-metered. Spyderbyte-managed resources are usage-priced. Organizations pay annual platform fees for shared operation, governance, administration, identity, policy, audit, and collaboration. |
-| Scope discipline            | Do not build a full browser IDE, custom notebook implementation, Tableau-class BI, spreadsheet competitor, proprietary chart language, default Kubernetes platform, or dozens of hosted integrations in the initial release.                                                              |
+| Requirement                     | Declarative decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Terminal and primitive adoption | The Kimi-derived fork supplies terminal interaction, selected ACP mechanics, and approved context/compaction/retry/provider-transport/tool/process/checkpoint/background primitives behind Spyderbyte-owned adapters. Spyderbyte owns the agent/session lifecycle, clients, domain, policy, Runs, provider/runtime configuration and routing, tools/capabilities, artifacts, billing, identity, telemetry policy, configuration, and updates. Current migration authority is in `SPYDERBYTE_IMPLEMENTATION_PLAN.md`. |
+| Existing Cline-derived code     | `packages/cline-adapter` remains a compatibility boundary during migration. It is not the final Spyderbyte Agent and cannot own tools, policy, sessions, or Runs.                                                                                                                                                                                                                                                                                                                                                    |
+| Conversation-first product      | The CLI/TUI is the primary daily control surface. Web and desktop are rich artifact, visual inspection, administration, and distribution surfaces, not competing control planes.                                                                                                                                                                                                                                                                                                                                     |
+| Universal execution             | Every material action becomes one Spyderbyte `Run`, with `ExecutionAttempt` records for retries. Codex turns, rollouts, or ACP requests are not alternate execution entities.                                                                                                                                                                                                                                                                                                                                        |
+| Local-first product             | Local-only mode works offline without a Spyderbyte account. BYOK and local models remain first-class. Cloud state is lazy and optional until requested.                                                                                                                                                                                                                                                                                                                                                              |
+| Cloud                           | Local, customer-owned, and Spyderbyte-managed execution use the same contracts. Initial hosted adapters may target OpenRouter, Modal, Postgres, R2, a durable workflow provider, Stripe, and OpenTelemetry/Sentry, but vendor names never become domain types.                                                                                                                                                                                                                                                       |
+| ACP                             | `spyderbyte acp` is a transport adapter over the same `AgentSession` and Agent events as TUI, CLI, and API. ACP is not the business-logic layer and Codex app-server protocol is not ACP authority.                                                                                                                                                                                                                                                                                                                  |
+| Commercial model                | Individual platform use is free; personal BYOK/local/customer infrastructure is not platform-metered. Spyderbyte-managed resources are usage-priced. Organizations pay annual platform fees for shared operation, governance, administration, identity, policy, audit, and collaboration.                                                                                                                                                                                                                            |
+| Scope discipline                | Do not build a full browser IDE, custom notebook implementation, Tableau-class BI, spreadsheet competitor, proprietary chart language, default Kubernetes platform, or dozens of hosted integrations in the initial release.                                                                                                                                                                                                                                                                                         |
 
 ## 3. Product and architecture invariants
 
 ### 3.1 Authority and boundaries
 
 ```text
-Codex-derived terminal primitives
+Kimi-derived UI and approved implementation primitives
               ↓
-Spyderbyte shell and renderers
+Spyderbyte shell, renderers, and bounded adapters
               ↓
 Spyderbyte typed clients and protocol
               ↓
@@ -1204,20 +1228,24 @@ The implementation must request a decision before:
 ## 14. Status ledger and next actions
 
 The current overall program status is **In progress**. Phases 0 through 10 and the local Phase 11
-scope are complete for their documented local scope; hosted deployment/certification, commercial
-decisions, and credentialed/native release gates remain open.
+scope are complete only for their documented local platform scope. The Kimi-based terminal
+integration has not started in the GitHub integration repository. Hosted deployment/certification,
+commercial decisions, credentialed/native release gates, and composed Python-plus-sidecar release
+evidence remain open.
 
 Immediate order:
 
-1. Re-fetch or authenticate the upstream commit/release digest before any future upstream source
-   synchronization; the current local snapshot is recorded by deterministic manifest digest.
-2. Keep `apps/spyderbyte-shell` isolated and extend its typed event/rendering coverage only through
-   Spyderbyte-owned contracts; do not add Codex domain or account behavior.
-3. Continue the local-first golden path and close remaining Phase 6 artifact/notebook and release
-   evidence gaps without moving authority into the shell or ACP adapter.
-4. Implement hosted Spyderbyte Cloud execution while preserving the same AgentSession, Run, event,
-   artifact, usage, audit, and policy contracts.
-5. Continue through hosted deployment, commercial, and release gates in order.
+1. Execute Wave 0 of
+   [`SPYDERBYTE_IMPLEMENTATION_PLAN.md`](SPYDERBYTE_IMPLEMENTATION_PLAN.md): freeze
+   both source baselines, record licenses/provenance, and approve the isolated import method.
+2. Import the local platform under an isolated integration-repository prefix; do not push this
+   local `main` over the Kimi history or trust its stale `origin/main` tracking ref.
+3. Freeze the language-neutral client/event contract, implement the Python Spyderbyte client, and
+   wire the Kimi-derived shell through a frontend projection boundary.
+4. Complete the local AgentSession/Universal Run/approval/artifact/usage golden path, then remove
+   Kimi agent, provider, tool, approval, auth, telemetry, and session authority from production.
+5. Package and verify the composed Python-plus-sidecar product before continuing through hosted,
+   commercial, organizational, certification, and native release gates.
 
 Each completed action must add a dated evidence record to this plan and update the relevant phase
 status. This plan is the declarative record going forward.
