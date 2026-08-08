@@ -43,10 +43,18 @@ from spyderbyte_cli.frontend.models import (
     FrontendSession,
     PromptAcceptance,
 )
+from spyderbyte_cli.frontend.resources import (
+    FrontendResourceClient,
+    MockNativeResourceClient,
+    NativeResourceClient,
+)
 from spyderbyte_cli.frontend.transport import FrontendTransport, FrontendTransportError
 
 
 class FrontendClient(Protocol):
+    @property
+    def resources(self) -> FrontendResourceClient: ...
+
     async def open_session(self) -> FrontendSession: ...
 
     async def send_prompt(
@@ -93,6 +101,7 @@ class MockFrontendClient:
 
     def __init__(self) -> None:
         self._now = datetime(2026, 8, 8, tzinfo=UTC)
+        self.resources = MockNativeResourceClient()
         self._session = FrontendSession(
             session_id="fs_mock_01",
             project_id="prj_mock_01",
@@ -245,6 +254,7 @@ class HttpFrontendClient:
         project_objective: str | None = None,
     ) -> None:
         self.transport = transport
+        self.resources = NativeResourceClient(transport)
         self.project_id = project_id
         self.agent_session_id = agent_session_id
         self._capabilities = capabilities or FrontendCapabilities(api_version="v1")

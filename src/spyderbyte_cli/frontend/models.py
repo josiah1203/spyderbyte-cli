@@ -64,6 +64,63 @@ FrontendInterface = Literal[
 ]
 
 
+FrontendResourceType = Literal[
+    "dataset",
+    "sql",
+    "notebook",
+    "experiment",
+    "model",
+    "visualization",
+    "pipeline",
+    "automation",
+]
+
+FrontendResourceOperation = Literal[
+    "discover",
+    "invoke",
+    "observe",
+    "resume",
+    "cancel",
+    "inspect",
+    "compare",
+    "publish",
+    "export",
+    "handoff",
+]
+
+
+class FrontendResourceCapability(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operations: tuple[FrontendResourceOperation, ...]
+    route_family: str
+
+
+class FrontendResourceRequest(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operation: FrontendResourceOperation
+    resource_id: str | None = None
+    run_id: str | None = None
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendResourceResult(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operation: FrontendResourceOperation
+    resource_id: str | None = None
+    run_id: str | None = None
+    state: str = "unknown"
+    capabilities: tuple[FrontendResourceCapability, ...] = ()
+    items: tuple[dict[str, Any], ...] = ()
+    data: dict[str, Any] = Field(default_factory=dict)
+    artifact_ids: tuple[str, ...] = ()
+    lineage: tuple[str, ...] = ()
+    handoff: dict[str, Any] | None = None
+    error: FrontendError | None = None
+
+
 class FrontendProject(FrontendModel):
     schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
     project_id: str
@@ -379,3 +436,4 @@ class FrontendRunDetail(FrontendModel):
 
 
 EventPage.model_rebuild()
+FrontendResourceResult.model_rebuild()

@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := prepare
 
-.PHONY: check-spyderbyte test-spyderbyte frontend-contracts-check verify-wave-1 verify-wave-2 verify-wave-3 verify-platform
+.PHONY: check-spyderbyte test-spyderbyte frontend-contracts-check verify-wave-1 verify-wave-2 verify-wave-3 verify-wave-4 verify-platform
 check-spyderbyte: ## Check Spyderbyte Python composition sources.
-	@uv run ruff check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/verify_wave_3.py scripts/generate_spyderbyte_frontend_contracts.py
-	@uv run ruff format --check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/verify_wave_3.py scripts/generate_spyderbyte_frontend_contracts.py
+	@uv run ruff check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/verify_wave_3.py scripts/verify_wave_4.py scripts/generate_spyderbyte_frontend_contracts.py
+	@uv run ruff format --check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/verify_wave_3.py scripts/verify_wave_4.py scripts/generate_spyderbyte_frontend_contracts.py
 	@uv run pyright src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui
 
 test-spyderbyte: ## Run Spyderbyte frontend, boundary, adapter, and retained-UI tests.
@@ -24,6 +24,10 @@ verify-wave-2: frontend-contracts-check check-spyderbyte test-spyderbyte ## Veri
 verify-wave-3: frontend-contracts-check check-spyderbyte test-spyderbyte ## Verify the local golden path against the real daemon.
 	@uv run python scripts/verify_wave_0.py
 	@uv run python scripts/verify_wave_3.py
+
+verify-wave-4: frontend-contracts-check check-spyderbyte test-spyderbyte ## Verify native computational resources through the real daemon.
+	@uv run python scripts/verify_wave_0.py
+	@uv run python scripts/verify_wave_4.py
 
 .PHONY: help
 help: ## Show available make targets.
