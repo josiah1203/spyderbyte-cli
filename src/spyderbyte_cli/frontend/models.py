@@ -64,6 +64,63 @@ FrontendInterface = Literal[
 ]
 
 
+FrontendResourceType = Literal[
+    "dataset",
+    "sql",
+    "notebook",
+    "experiment",
+    "model",
+    "visualization",
+    "pipeline",
+    "automation",
+]
+
+FrontendResourceOperation = Literal[
+    "discover",
+    "invoke",
+    "observe",
+    "resume",
+    "cancel",
+    "inspect",
+    "compare",
+    "publish",
+    "export",
+    "handoff",
+]
+
+
+class FrontendResourceCapability(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operations: tuple[FrontendResourceOperation, ...]
+    route_family: str
+
+
+class FrontendResourceRequest(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operation: FrontendResourceOperation
+    resource_id: str | None = None
+    run_id: str | None = None
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendResourceResult(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    resource_type: FrontendResourceType
+    operation: FrontendResourceOperation
+    resource_id: str | None = None
+    run_id: str | None = None
+    state: str = "unknown"
+    capabilities: tuple[FrontendResourceCapability, ...] = ()
+    items: tuple[dict[str, Any], ...] = ()
+    data: dict[str, Any] = Field(default_factory=dict)
+    artifact_ids: tuple[str, ...] = ()
+    lineage: tuple[str, ...] = ()
+    handoff: dict[str, Any] | None = None
+    error: FrontendError | None = None
+
+
 class FrontendProject(FrontendModel):
     schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
     project_id: str
@@ -378,4 +435,87 @@ class FrontendRunDetail(FrontendModel):
     logs: tuple[FrontendRunLog, ...] = ()
 
 
+class FrontendOrganization(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    name: str
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendMembership(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    actor_id: str
+    role: str
+    status: str = "active"
+    scopes: tuple[dict[str, Any], ...] = ()
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendPolicy(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    version: str
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendBudget(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    currency: str = "USD"
+    hard_limit_minor: int | None = None
+    soft_limit_minor: int | None = None
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendAuditRecord(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    decision: str
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendGovernanceOverview(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    organization: dict[str, Any] = Field(default_factory=dict)
+    membership: dict[str, Any] = Field(default_factory=dict)
+    policies: tuple[dict[str, Any], ...] = ()
+    budgets: tuple[dict[str, Any], ...] = ()
+    providers: tuple[dict[str, Any], ...] = ()
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendGovernanceDecision(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    organization_id: str
+    outcome: str
+    input_digest: str | None = None
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendLicenseStatus(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    status: str
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendOnboardingStatus(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    choices: tuple[str, ...] = ()
+    selected: str | None = None
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
+class FrontendWorkspaceSnapshot(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    workspace_id: str
+    mode: str = "personal_local"
+    organization_id: str | None = None
+    data: dict[str, Any] = Field(default_factory=dict)
+
+
 EventPage.model_rebuild()
+FrontendResourceResult.model_rebuild()
+FrontendGovernanceOverview.model_rebuild()
+FrontendGovernanceDecision.model_rebuild()

@@ -2379,6 +2379,10 @@ export class SpyderbyteClient
     );
   }
 
+  visualizationCatalog(options?: ClientRequestOptions): Promise<JsonValue> {
+    return this.get('/v1/visualizations/catalog', options);
+  }
+
   validateVisualization(input: JsonValue, options?: ClientRequestOptions): Promise<JsonValue> {
     return this.post('/v1/visualizations/validate', input, options);
   }

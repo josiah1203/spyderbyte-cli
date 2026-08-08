@@ -186,13 +186,12 @@ independent build boundary.
 
 - The local platform is imported under `platform/` with its source history preserved and a
   hermetic composed verification command.
-- The Kimi fork remains the terminal foundation. Waves 0 and 1 are complete locally: provenance,
-  classification, composition, frontend contracts, the mock shell, isolated inherited
-  primitives, daemon discovery, and visual-regression evidence are recorded.
+- Waves 0 through 5 are complete locally: provenance, composition, frontend contracts, transport,
+  the local AgentSession/Run golden path, native computational-resource parity, and organizational
+  governance/hosted interface parity are recorded.
 - Hosted deployment/certification, production commercial decisions, credentialed/native release,
   and composed Python-plus-sidecar release evidence remain open.
-- Wave 2 — Contract and transport foundation is complete locally; real model credentials and the
-  durable local golden path remain intentionally outside this wave.
+- Next executable increment: Wave 6 Kimi authority removal and product cutover.
 
 | Wave | Status | Evidence or next gate |
 | ---- | ------ | --------------------- |
@@ -200,8 +199,8 @@ independent build boundary.
 | 1 — Compose without coupling | Complete | Platform subtree, typed frontend v1 seam, mock shell, adapter boundary, daemon launcher, retained visual tests, and independent verification recorded; PR deferred by owner |
 | 2 — Contract and transport | Complete | Versioned DTOs, authenticated/retrying HTTP+SSE transport, deterministic projection, ACP mapping, adapter ports, daemon lifecycle, and mock reconnect evidence recorded; PR deferred by owner |
 | 3 — Local golden path | Complete locally | Real daemon golden path, durable AgentSession/Run snapshots, provider/model/runtime facets, local ACP, and reproducible E2E evidence recorded in [`WAVE_3_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_3_EVIDENCE.md); credentialed-provider and publication gates remain external |
-| 4 — Computational parity | Planned | Requires the shared local AgentSession/Run vertical slice |
-| 5 — Organizational/hosted interfaces | Planned | Requires stable organization and cloud contracts |
+| 4 — Computational parity | Complete locally | Typed native-resource matrix, headless `resource` command, visualization catalog, and daemon discover evidence recorded in [`WAVE_4_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_4_EVIDENCE.md); rich-client handoff UX and hosted publication remain external |
+| 5 — Organizational/hosted interfaces | Complete locally | Governance client/CLI, workspace facets, onboarding/license, ACP cancel, and command-parity matrix recorded in [`WAVE_5_EVIDENCE.md`](docs/spyderbyte-integration/WAVE_5_EVIDENCE.md); SSO/SCIM and signed cloud login remain external |
 | 6 — Authority cutover | Planned | Requires substitution evidence for every retained primitive |
 | 7 — Hosted/commercial/release | Planned | Requires credentials, vendor/product decisions, signing, and release environments |
 
