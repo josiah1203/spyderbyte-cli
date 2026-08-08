@@ -1,5 +1,149 @@
 {
   "$defs": {
+    "EventPage": {
+      "additionalProperties": false,
+      "description": "A reconnectable, cursor-addressed page from the backend event stream.",
+      "properties": {
+        "cursor": {
+          "minimum": 0,
+          "title": "Cursor",
+          "type": "integer"
+        },
+        "events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "gapDetected": {
+          "default": false,
+          "title": "Gapdetected",
+          "type": "boolean"
+        },
+        "refreshRequired": {
+          "default": false,
+          "title": "Refreshrequired",
+          "type": "boolean"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cursor"
+      ],
+      "title": "EventPage",
+      "type": "object"
+    },
+    "FrontendApproval": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "additionalProperties": true,
+          "title": "Action",
+          "type": "object"
+        },
+        "approvalId": {
+          "title": "Approvalid",
+          "type": "string"
+        },
+        "resources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Resources",
+          "type": "array"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "approved",
+            "rejected",
+            "revoked"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "approvalId",
+        "runId",
+        "state"
+      ],
+      "title": "FrontendApproval",
+      "type": "object"
+    },
+    "FrontendArtifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifactId": {
+          "title": "Artifactid",
+          "type": "string"
+        },
+        "contentHash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Contenthash"
+        },
+        "mediaType": {
+          "title": "Mediatype",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "version": {
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifactId",
+        "version",
+        "mediaType"
+      ],
+      "title": "FrontendArtifact",
+      "type": "object"
+    },
     "FrontendCapabilities": {
       "additionalProperties": false,
       "properties": {
@@ -37,6 +181,61 @@
         "apiVersion"
       ],
       "title": "FrontendCapabilities",
+      "type": "object"
+    },
+    "FrontendError": {
+      "additionalProperties": false,
+      "description": "Stable error envelope exposed to every frontend transport.",
+      "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "correlationId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correlationid"
+        },
+        "details": {
+          "additionalProperties": true,
+          "title": "Details",
+          "type": "object"
+        },
+        "error": {
+          "title": "Error",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "title": "FrontendError",
       "type": "object"
     },
     "FrontendEvent": {
@@ -114,6 +313,76 @@
       "title": "FrontendEvent",
       "type": "object"
     },
+    "FrontendRun": {
+      "additionalProperties": false,
+      "properties": {
+        "attemptCount": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Attemptcount",
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontendError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "projectId": {
+          "title": "Projectid",
+          "type": "string"
+        },
+        "requestedAction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requestedaction"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "enum": [
+            "accepted",
+            "queued",
+            "running",
+            "awaiting_approval",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "timed_out",
+            "partially_succeeded"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "runId",
+        "projectId",
+        "state"
+      ],
+      "title": "FrontendRun",
+      "type": "object"
+    },
     "FrontendSession": {
       "additionalProperties": false,
       "properties": {
@@ -172,6 +441,64 @@
         "issuedAt"
       ],
       "title": "FrontendSession",
+      "type": "object"
+    },
+    "FrontendUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "actualCost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actualcost"
+        },
+        "estimatedCost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimatedcost"
+        },
+        "inputTokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Inputtokens",
+          "type": "integer"
+        },
+        "outputTokens": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Outputtokens",
+          "type": "integer"
+        },
+        "runId": {
+          "title": "Runid",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "runId"
+      ],
+      "title": "FrontendUsage",
       "type": "object"
     },
     "PromptAcceptance": {
@@ -235,6 +562,24 @@
     },
     {
       "$ref": "#/$defs/FrontendEvent"
+    },
+    {
+      "$ref": "#/$defs/EventPage"
+    },
+    {
+      "$ref": "#/$defs/FrontendError"
+    },
+    {
+      "$ref": "#/$defs/FrontendRun"
+    },
+    {
+      "$ref": "#/$defs/FrontendApproval"
+    },
+    {
+      "$ref": "#/$defs/FrontendArtifact"
+    },
+    {
+      "$ref": "#/$defs/FrontendUsage"
     }
   ]
 }

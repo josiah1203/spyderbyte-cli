@@ -74,5 +74,5 @@ sidecar.
 
 Wave 1 satisfies its exit gate: both projects build and test independently in one repository, the
 shell runs against a typed mock frontend session, the Kimi visual foundation is retained, and no
-untyped bridge or Kimi backend authority has been introduced. Waves 2–7 remain planned and were
-not started per the owner's instruction to finish after Wave 1.
+untyped bridge or Kimi backend authority has been introduced. At the Wave 1 boundary, Waves 2–7
+were still planned; Wave 2 completion is recorded separately in `WAVE_2_EVIDENCE.md`.

@@ -7,7 +7,17 @@ from pathlib import Path
 
 from pydantic import TypeAdapter
 
-from spyderbyte_cli.frontend.models import FrontendEvent, FrontendSession, PromptAcceptance
+from spyderbyte_cli.frontend.models import (
+    EventPage,
+    FrontendApproval,
+    FrontendArtifact,
+    FrontendError,
+    FrontendEvent,
+    FrontendRun,
+    FrontendSession,
+    FrontendUsage,
+    PromptAcceptance,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "contracts/frontend/v1/frontend-contracts.schema.json"
@@ -15,7 +25,15 @@ OUTPUT = ROOT / "contracts/frontend/v1/frontend-contracts.schema.json"
 
 def render() -> str:
     schema = TypeAdapter(
-        FrontendSession | PromptAcceptance | FrontendEvent,
+        FrontendSession
+        | PromptAcceptance
+        | FrontendEvent
+        | EventPage
+        | FrontendError
+        | FrontendRun
+        | FrontendApproval
+        | FrontendArtifact
+        | FrontendUsage,
     ).json_schema(by_alias=True, union_format="any_of")
     return json.dumps(schema, indent=2, sort_keys=True) + "\n"
 

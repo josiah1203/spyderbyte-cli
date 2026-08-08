@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := prepare
 
-.PHONY: check-spyderbyte test-spyderbyte frontend-contracts-check verify-wave-1 verify-platform
+.PHONY: check-spyderbyte test-spyderbyte frontend-contracts-check verify-wave-1 verify-wave-2 verify-platform
 check-spyderbyte: ## Check Spyderbyte Python composition sources.
 	@uv run ruff check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/generate_spyderbyte_frontend_contracts.py
 	@uv run ruff format --check src/spyderbyte_cli tests/spyderbyte_contract tests/upstream_ui scripts/verify_wave_0.py scripts/generate_spyderbyte_frontend_contracts.py
@@ -16,6 +16,9 @@ verify-platform: ## Run the imported Spyderbyte platform verification independen
 	@pnpm --dir platform verify:composed
 
 verify-wave-1: frontend-contracts-check check-spyderbyte test-spyderbyte ## Verify Wave 1 Python seams.
+	@uv run python scripts/verify_wave_0.py
+
+verify-wave-2: frontend-contracts-check check-spyderbyte test-spyderbyte ## Verify Wave 2 contracts and transport seams.
 	@uv run python scripts/verify_wave_0.py
 
 .PHONY: help

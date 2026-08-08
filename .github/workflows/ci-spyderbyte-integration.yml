@@ -87,7 +87,7 @@ jobs:
           enable-cache: true
           cache-dependency-glob: uv.lock
       - run: uv sync --frozen --all-extras --all-packages
-      - run: make verify-wave-1
+      - run: make verify-wave-2
 
   spyderbyte-platform:
     runs-on: macos-14
