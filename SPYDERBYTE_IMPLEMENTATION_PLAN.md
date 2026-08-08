@@ -191,15 +191,15 @@ independent build boundary.
   primitives, daemon discovery, and visual-regression evidence are recorded.
 - Hosted deployment/certification, production commercial decisions, credentialed/native release,
   and composed Python-plus-sidecar release evidence remain open.
-- The next executable program increment is **Wave 2 — Contract and transport foundation** in
-  Section 8.2; it is intentionally not started under the owner's Wave 1 stopping instruction.
+- Wave 2 — Contract and transport foundation is complete locally; real model credentials and the
+  durable local golden path remain intentionally outside this wave.
 
 | Wave | Status | Evidence or next gate |
 | ---- | ------ | --------------------- |
 | 0 — Freeze and decide | Complete | Source tags, hashes, exhaustive classification, candidate decisions, baseline evidence, and owner gate recorded; PR deferred by owner |
 | 1 — Compose without coupling | Complete | Platform subtree, typed frontend v1 seam, mock shell, adapter boundary, daemon launcher, retained visual tests, and independent verification recorded; PR deferred by owner |
-| 2 — Contract and transport | Planned | Requires composed independent build roots and stable schema fixtures |
-| 3 — Local golden path | Planned | Requires typed Python client and deterministic event projection |
+| 2 — Contract and transport | Complete | Versioned DTOs, authenticated/retrying HTTP+SSE transport, deterministic projection, ACP mapping, adapter ports, daemon lifecycle, and mock reconnect evidence recorded; PR deferred by owner |
+| 3 — Local golden path | Planned | Requires the typed client and deterministic projection from Wave 2 plus backend-resolved AgentSession/Run wiring |
 | 4 — Computational parity | Planned | Requires the shared local AgentSession/Run vertical slice |
 | 5 — Organizational/hosted interfaces | Planned | Requires stable organization and cloud contracts |
 | 6 — Authority cutover | Planned | Requires substitution evidence for every retained primitive |
@@ -675,6 +675,13 @@ Run B, C, U, K, E, A, P, and Q in parallel.
 **Exit:** the Kimi-derived UI renders a complete mocked Spyderbyte turn and reconnects without
 Kimi product authority. Any retained runtime primitive is reachable only through a Spyderbyte
 adapter and passes its initial conformance/security gate.
+
+**Wave 2 completion record — 2026-08-08:** The versioned frontend contract now covers session,
+prompt acceptance, errors, event pages, Runs, approvals, artifacts, and usage. The Python client
+uses an authenticated, idempotency-aware transport with bounded retries and SSE cursor resume;
+duplicate/out-of-order/gap behavior is deterministic through `FrontendProjector`. ACP mapping,
+provider/tool/process/background adapter seams, and cross-platform daemon start/stop/restart/
+diagnostics are covered by focused tests. `make verify-wave-2` is the local exit command.
 
 #### Wave 3 — Local golden-path wiring
 

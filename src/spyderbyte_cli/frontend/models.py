@@ -53,6 +53,80 @@ class PromptAcceptance(FrontendModel):
     accepted_at: datetime
 
 
+class FrontendError(FrontendModel):
+    """Stable error envelope exposed to every frontend transport."""
+
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    error: str
+    code: str | None = None
+    correlation_id: str | None = None
+    retryable: bool = False
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
+class EventPage(FrontendModel):
+    """A reconnectable, cursor-addressed page from the backend event stream."""
+
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    cursor: int = Field(ge=0)
+    events: tuple[FrontendEvent, ...] = ()
+    gap_detected: bool = False
+    refresh_required: bool = False
+
+
+FrontendRunState = Literal[
+    "accepted",
+    "queued",
+    "running",
+    "awaiting_approval",
+    "succeeded",
+    "failed",
+    "cancelled",
+    "timed_out",
+    "partially_succeeded",
+]
+
+
+class FrontendRun(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    run_id: str
+    project_id: str
+    state: FrontendRunState
+    attempt_count: int = Field(default=0, ge=0)
+    requested_action: str | None = None
+    error: FrontendError | None = None
+
+
+class FrontendApproval(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    approval_id: str
+    run_id: str
+    state: Literal["pending", "approved", "rejected", "revoked"]
+    action: dict[str, Any] = Field(default_factory=dict)
+    resources: tuple[str, ...] = ()
+
+
+class FrontendArtifact(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    artifact_id: str
+    version: int = Field(ge=1)
+    media_type: str
+    content_hash: str | None = None
+    title: str | None = None
+
+
+class FrontendUsage(FrontendModel):
+    schema_version: Literal[1] = FRONTEND_SCHEMA_VERSION
+    run_id: str
+    input_tokens: int = Field(default=0, ge=0)
+    output_tokens: int = Field(default=0, ge=0)
+    estimated_cost: float | None = Field(default=None, ge=0)
+    actual_cost: float | None = Field(default=None, ge=0)
+
+
+FrontendInterface = Literal["tui", "cli", "acp", "api", "mock"]
+
+
 FrontendEventKind = Literal[
     "session.ready",
     "turn.accepted",
@@ -76,3 +150,6 @@ class FrontendEvent(FrontendModel):
     agent_session_id: str
     run_id: str | None = None
     payload: dict[str, Any] = Field(default_factory=dict)
+
+
+EventPage.model_rebuild()
