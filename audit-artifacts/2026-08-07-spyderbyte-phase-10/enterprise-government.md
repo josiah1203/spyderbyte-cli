@@ -61,15 +61,19 @@ and support bundle, government commitments, and procurement evidence.
 - `pnpm contracts:check`, `pnpm api-contracts:check`, and the package-boundary check passed.
 - `pnpm test:invariants` passed all 50 invariant tasks.
 - Targeted Prettier checks passed for all Phase 10 files.
-- The repository-wide `pnpm test` reached the unrelated existing
+- The original Phase 10 verification run reached the unrelated existing
   `packages/provider-runtime/tests/provider-runtime.test.ts` update-manifest assertion (1 failed,
   61 passed in that package); the Phase 10 affected-package suites remained green.
-- The repository-wide `pnpm format:check` still reports seven pre-existing files outside this
+- That original run's `pnpm format:check` reported seven pre-existing files outside this
   change (`apps/local-daemon/src/conversation.ts`, `apps/local-daemon/src/index.ts`,
   `apps/local-daemon/tests/phase9-organizational.test.ts`, `apps/tui/src/index.ts`,
   `apps/web/src/screens/Governance.tsx`, `packages/local-api/src/production-scale.ts`, and
   `packages/policy/src/governance.ts`). Those unrelated formatting changes were not folded into
   this phase.
+- A subsequent clean-baseline `pnpm verify` rerun passed contracts, migration and Phase 11 audits,
+  container checks, tracked-artifact checks, formatting, lint/boundaries, typecheck, tests,
+  invariants, and build. The earlier provider-runtime and formatting results are historical phase
+  evidence, not current repository failures.
 
 ## Boundary remaining open
 

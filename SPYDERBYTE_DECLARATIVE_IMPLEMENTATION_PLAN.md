@@ -998,10 +998,12 @@ retention foundations remain intact. Acceptance evidence is in
 [`packages/backends/tests/phase10-enterprise-government.test.ts`](packages/backends/tests/phase10-enterprise-government.test.ts),
 and [`packages/local-api/tests/phase10-enterprise.test.ts`](packages/local-api/tests/phase10-enterprise.test.ts).
 The affected package suites, repository lint/typecheck/build, contract generation, API contract,
-package-boundary checks, and invariant tests pass. The repository-wide test command still reaches
-an unrelated provider-runtime update-manifest assertion, and repository-wide formatting remains
-blocked by seven unrelated pre-existing files listed in the audit record. Real hosted identity/KMS/HSM/private-infrastructure
-deployment, government authorization, certification, and release evidence remain open.
+package-boundary checks, invariant tests, and the tracked-artifact guard pass. The original Phase 10
+run recorded an unrelated provider-runtime update-manifest assertion and seven formatting files;
+those are retained in the audit record as historical evidence. A subsequent clean-baseline
+`pnpm verify` rerun passes the repository-wide contracts, formatting, lint/boundary, typecheck,
+test, invariant, and build gates. Real hosted identity/KMS/HSM/private-infrastructure deployment,
+government authorization, certification, and release evidence remain open.
 
 ### Phase 11 — Release, operations, and product guardrails
 

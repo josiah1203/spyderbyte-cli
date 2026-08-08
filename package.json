@@ -25,6 +25,7 @@
     "frontend-contracts:check": "node scripts/verify/generate-frontend-contract-snapshot.mjs --check",
     "verify:phase11": "node scripts/verify/check-phase11-local.mjs",
     "verify:containers": "node scripts/verify/check-container-images.mjs",
+    "verify:tracked-artifacts": "node scripts/verify/check-tracked-artifacts.mjs",
     "codex:migration:generate": "node scripts/verify/generate-codex-migration-matrix.mjs",
     "codex:migration:check": "node scripts/verify/generate-codex-migration-matrix.mjs --check",
     "codex:migration:audit": "node scripts/verify/check-codex-phase-zero.mjs",
@@ -36,7 +37,7 @@
     "dev:license": "node scripts/dev/create-development-license.mjs",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "verify": "pnpm contracts:check && pnpm api-contracts:check && pnpm frontend-contracts:check && pnpm codex:migration:check && pnpm codex:migration:audit && pnpm verify:phase11 && pnpm verify:containers && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:invariants && pnpm build"
+    "verify": "pnpm contracts:check && pnpm api-contracts:check && pnpm frontend-contracts:check && pnpm codex:migration:check && pnpm codex:migration:audit && pnpm verify:phase11 && pnpm verify:containers && pnpm verify:tracked-artifacts && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:invariants && pnpm build"
   },
   "devDependencies": {
     "@eslint/js": "9.30.1",
