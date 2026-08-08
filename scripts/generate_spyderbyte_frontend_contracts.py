@@ -28,6 +28,9 @@ from spyderbyte_cli.frontend.models import (
     FrontendProject,
     FrontendProviderCatalog,
     FrontendRecommendation,
+    FrontendResourceCapability,
+    FrontendResourceRequest,
+    FrontendResourceResult,
     FrontendRun,
     FrontendRunAttempt,
     FrontendRunDetail,
@@ -56,6 +59,9 @@ def render() -> str:
         | FrontendProviderCatalog
         | FrontendModelCatalog
         | FrontendRuntimeCatalog
+        | FrontendResourceCapability
+        | FrontendResourceRequest
+        | FrontendResourceResult
         | FrontendProject
         | FrontendAgentSession
         | FrontendAgentRequest

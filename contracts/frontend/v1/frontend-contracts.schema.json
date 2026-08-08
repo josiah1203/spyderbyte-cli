@@ -1448,6 +1448,275 @@
       "title": "FrontendRecommendation",
       "type": "object"
     },
+    "FrontendResourceCapability": {
+      "additionalProperties": false,
+      "properties": {
+        "operations": {
+          "items": {
+            "enum": [
+              "discover",
+              "invoke",
+              "observe",
+              "resume",
+              "cancel",
+              "inspect",
+              "compare",
+              "publish",
+              "export",
+              "handoff"
+            ],
+            "type": "string"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "routeFamily": {
+          "title": "Routefamily",
+          "type": "string"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operations",
+        "routeFamily"
+      ],
+      "title": "FrontendResourceCapability",
+      "type": "object"
+    },
+    "FrontendResourceRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "enum": [
+            "discover",
+            "invoke",
+            "observe",
+            "resume",
+            "cancel",
+            "inspect",
+            "compare",
+            "publish",
+            "export",
+            "handoff"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "resourceId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resourceid"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operation"
+      ],
+      "title": "FrontendResourceRequest",
+      "type": "object"
+    },
+    "FrontendResourceResult": {
+      "additionalProperties": false,
+      "properties": {
+        "artifactIds": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifactids",
+          "type": "array"
+        },
+        "capabilities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/FrontendResourceCapability"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FrontendError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "handoff": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Handoff"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "lineage": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Lineage",
+          "type": "array"
+        },
+        "operation": {
+          "enum": [
+            "discover",
+            "invoke",
+            "observe",
+            "resume",
+            "cancel",
+            "inspect",
+            "compare",
+            "publish",
+            "export",
+            "handoff"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "resourceId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resourceid"
+        },
+        "resourceType": {
+          "enum": [
+            "dataset",
+            "sql",
+            "notebook",
+            "experiment",
+            "model",
+            "visualization",
+            "pipeline",
+            "automation"
+          ],
+          "title": "Resourcetype",
+          "type": "string"
+        },
+        "runId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runid"
+        },
+        "schemaVersion": {
+          "const": 1,
+          "default": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "state": {
+          "default": "unknown",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "resourceType",
+        "operation"
+      ],
+      "title": "FrontendResourceResult",
+      "type": "object"
+    },
     "FrontendRun": {
       "additionalProperties": false,
       "properties": {
@@ -1931,6 +2200,15 @@
     },
     {
       "$ref": "#/$defs/FrontendRuntimeCatalog"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceCapability"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceRequest"
+    },
+    {
+      "$ref": "#/$defs/FrontendResourceResult"
     },
     {
       "$ref": "#/$defs/FrontendProject"
